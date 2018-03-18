@@ -17,12 +17,14 @@
         android:textSize="25pt"/>
 
     <Button
+        android:id="@+id/historygo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="운동기록보기"/>
 
     <Button
+        android:id="@+id/recordgo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
