@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private CounterService binder;
     private boolean running = true;
 ////////////////////////////////////////
-    private TextView tv;
-    private SensorManager sm;
-    private Sensor s; //옥이 추가
+    private TextView tv,tv2;
+    private SensorManager sm,sm2;
+    private Sensor s,s2; //옥이 추가
     // ////////////////////////////////////
     boolean startState = false;
     int time=0;
@@ -84,12 +84,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         getBoundedDevice();
 
-        tv = (TextView)findViewById(R.id.textView1);
+        tv = (TextView)findViewById(R.id.orientview);
+        tv2=(TextView)findViewById(R.id.accelview);
 
         // 센서객체를 얻어오기 위해서는 센서메니저를 통해서만 가능하다
         sm = (SensorManager)
                 getSystemService(Context.SENSOR_SERVICE);
+        sm2=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         s = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION); // 방향센서
+        s2=sm2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     void getBoundedDevice() {   // MI Band 2 MAC address 자동등록
@@ -409,11 +412,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sm.registerListener(this,        // 콜백 받을 리스너
                 s,            // 콜백 원하는 센서
                 SensorManager.SENSOR_DELAY_UI); // 지연시간
+        sm2.registerListener(this,s2,SensorManager.SENSOR_DELAY_UI);
     }
     @Override
     protected void onPause() { // 화면을 빠져나가면 즉시 센서자원 반납해야함!!
         super.onPause();
         sm.unregisterListener(this); // 반납할 센서
+        sm2.unregisterListener(this);
     }
 
     public void onSensorChanged(SensorEvent event) {
@@ -425,6 +430,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\n피치 : "+event.values[1]
                     +"\n롤 : "+event.values[2];
             tv.setText(str);
+        }
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            String str = "가속센서값"
+                    +"\nX : "+ event.values[0]
+                    +"\nY : "+ event.values[1]
+                    +"\nZ : "+ event.values[2];
+            tv2.setText(str);
         }
     }
 
