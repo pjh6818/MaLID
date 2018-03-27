@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     curr_step=0;
                     curr_distance=0;
                     curr_cal=0;
+                    Heart_rate = 0;
                     HR_list.clear();
                     txtByte.setText("...");
                     txtTimer.setText("0");
