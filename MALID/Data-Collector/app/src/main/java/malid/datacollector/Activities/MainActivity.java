@@ -15,10 +15,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +31,6 @@ import java.util.Set;
 
 import malid.datacollector.CounterService;
 import malid.datacollector.Helpers.CustomBluetoothProfile;
-import malid.datacollector.MyCounterService;
 import malid.datacollector.R;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
@@ -45,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     EditText txtPhysicalAddress;
     TextView txtState, txtTimer, txtByte;
     HRThread hrthread = new HRThread();
-    GetCountThread getcountThread = new GetCountThread();
-    Thread thread, thread2;
+    // GetCountThread getcountThread = new GetCountThread();
+    Thread thread;
 
     private CounterService binder;
     private boolean running = false;
@@ -171,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     btnServer.setText("Start");
                     getInformation();
 
-                    unbindService(connection);
+                    // unbindService(connection);
                     running = false;
                     thread.interrupt();
                 }
@@ -195,6 +193,42 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    public class CountAsyncTask extends AsyncTask<Integer, Integer, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            txtTimer = (TextView) findViewById(R.id.txtTimer);
+            time = 0;
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            while(running){
+                try {
+                    Thread.sleep(1000); // 1초 대기
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                time ++;    // time 1증가
+                publishProgress();      // onProgressUpdate 호출
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... params) {
+            txtTimer.setText(time + "");
+            if(time!=0 && time%5==0) HR_list.add(Heart_rate);
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    /*
     private class GetCountThread implements Runnable {
         private Handler handler = new Handler();
 
@@ -226,8 +260,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     e.printStackTrace();
                 }
             }
+            Log.v("test", "GetCountThread is dead");
         }
     }
+    */
 
     private class HRThread implements Runnable {
 
@@ -375,11 +411,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //if(running) HR_list.add(data[1]&0xFF);
                 if(Heart_rate == 0 && ((data[1]&0xFF)!=0)){ // 처음 심박수를 읽은 경우
                     Heart_rate = data[1]&0xFF;
-                    intent = new Intent(MainActivity.this, MyCounterService.class);
-                    //startService(intent);
-                    bindService(intent, connection, BIND_AUTO_CREATE);
-                    thread2 = new Thread(getcountThread);
-                    thread2.start();        // 시간 카운트 스레드 시작
+
+                    CountAsyncTask myAsyncTask = new CountAsyncTask();  // count 스레드생성
+                    myAsyncTask.execute();  // count 스레드실행
                 }
                 else if((data[1]&0xFF)!=0){
                     Heart_rate = data[1]&0xFF;
