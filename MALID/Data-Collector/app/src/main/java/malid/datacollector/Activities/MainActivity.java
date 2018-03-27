@@ -45,19 +45,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     EditText txtPhysicalAddress;
     TextView txtState, txtTimer, txtByte;
     HRThread hrthread = new HRThread();
-    Thread thread;
+    GetCountThread getcountThread = new GetCountThread();
+    Thread thread, thread2;
 
     private CounterService binder;
-    private boolean running = true;
+    private boolean running = false;
 ////////////////////////////////////////
     private TextView tv,tv2;
     private SensorManager sm,sm2;
     private Sensor s,s2; //옥이 추가
     // ////////////////////////////////////
-    boolean startState = false;
+    Intent intent;
     int time=0;
     int prev_step=0, prev_distance=0, prev_cal=0;
     int curr_step=0, curr_distance=0, curr_cal=0;
+    int Heart_rate=0;
     ArrayList<Integer> HR_list = new ArrayList<Integer>();
 
     @Override
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnServer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(startState == false) {   // 서버전송 시작
+                if(running == false) {   // 서버전송 시작
                     prev_step=0;
                     prev_distance=0;
                     prev_cal=0;
@@ -151,21 +153,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     txtByte.setText("...");
                     txtTimer.setText("0");
 
-                    startState = true;
                     Toast.makeText(getApplicationContext(),"서버 전송을 시작합니다.", Toast.LENGTH_SHORT).show();
                     btnServer.setText("Stop");
                     getInformation();
 
-                    Intent intent = new Intent(MainActivity.this, MyCounterService.class);
+                    // Intent intent = new Intent(MainActivity.this, MyCounterService.class);
                     //startService(intent);
-                    bindService(intent, connection, BIND_AUTO_CREATE);
+                    // bindService(intent, connection, BIND_AUTO_CREATE);
                     running = true;
-                    new Thread(new GetCountThread()).start();
+                    // new Thread(new GetCountThread()).start();
                     thread = new Thread(hrthread);
                     thread.start();
                 }
                 else {      // 서버전송 종료
-                    startState = false;
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
                     btnServer.setText("Start");
                     getInformation();
@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         public void run() {
 
+            Log.v("test", "CountThread start");
             while(running) {
                 if ( binder == null ) {
                     continue;
@@ -211,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         try {   // textview 갱신
                             txtTimer.setText(binder.getCount() + "");
                             time = binder.getCount();
+                            if(time!=0 && time%5==0) HR_list.add(Heart_rate);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -218,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 });
 
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -334,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 int new_distance = (data[8]&0xFF) << 24 | (data[7] & 0xFF) << 16 | (data[6] & 0xFF) << 8 | (data[5] & 0xFF);
                 int new_cal = (data[12]&0xFF) << 24 | (data[11] & 0xFF) << 16 | (data[10] & 0xFF) << 8 | (data[9] & 0xFF);
 
-                if(startState == true){
+                if(running == true){
                     prev_step = new_step;
                     prev_distance = new_distance;
                     prev_cal = new_cal;
@@ -369,7 +371,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             byte[] data = characteristic.getValue();
             if(data.length == 2){
                 Log.v("test", "HR : "+data[1]);
-                if(running) HR_list.add(data[1]&0xFF);
+                //if(running) HR_list.add(data[1]&0xFF);
+                if(Heart_rate == 0 && ((data[1]&0xFF)!=0)){ // 처음 심박수를 읽은 경우
+                    Heart_rate = data[1]&0xFF;
+                    intent = new Intent(MainActivity.this, MyCounterService.class);
+                    //startService(intent);
+                    bindService(intent, connection, BIND_AUTO_CREATE);
+                    thread2 = new Thread(getcountThread);
+                    thread2.start();        // 시간 카운트 스레드 시작
+                }
+                else if((data[1]&0xFF)!=0){
+                    Heart_rate = data[1]&0xFF;
+                }
+
             }
             //txtByte.setText(Arrays.toString(data));
         }
