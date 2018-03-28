@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Button btnStartConnecting, btnServer;
     EditText txtPhysicalAddress;
-    TextView txtState, txtTimer, txtByte;
+    TextView txtState, txtTimer, txtByte, serverView;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int prev_step=0, prev_distance=0, prev_cal=0;
     int curr_step=0, curr_distance=0, curr_cal=0;
     int Heart_rate=0;
+
     ArrayList<Integer> HR_list = new ArrayList<Integer>();
 
     @Override
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtByte = (TextView) findViewById(R.id.txtByte);
+        serverView = (TextView) findViewById(R.id.serverView);
     }
 
     void initializeEvents() {
@@ -261,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             while((line = reader.readLine()) != null){
                                 buffer.append(line);
                             }
+                            serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
+                            Log.v("test", "receive data from server");
                         } catch (MalformedURLException e){
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -297,7 +301,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
         }
     }
 
