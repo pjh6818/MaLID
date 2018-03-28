@@ -41,35 +41,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="99dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/txtPhysicalAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Physical Address"
-            android:inputType="textPersonName" />
-
-        <Button
-            android:id="@+id/btnStartConnecting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="connecting" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="150dp"
@@ -124,8 +95,7 @@
         android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -145,7 +115,7 @@
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
-        android:layout_height="23dp"
+        android:layout_height="110dp"
         android:layout_marginBottom="13dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -156,36 +126,96 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <RadioGroup
-            android:id="@+id/radioGroup1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkedButton="@+id/radiobtn1"
-            android:orientation='horizontal'
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="220dp">
+            android:id="@+id/RG1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <RadioButton
-                android:id="@+id/radiobtn1"
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="정지" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="걷기" />
 
             <RadioButton
-                android:id="@+id/radiobtn2"
+                android:id="@+id/radioButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="달리기" />
 
             <RadioButton
-                android:id="@+id/radiobtn3"
+                android:id="@+id/radioButton4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="자전거" />
 
+            <RadioButton
+                android:id="@+id/radioButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="계단오르기" />
+
         </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/RG2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioButton6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="러닝머신" />
+
+            <RadioButton
+                android:id="@+id/radioButton7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="팔굽혀펴기" />
+
+            <RadioButton
+                android:id="@+id/radioButton8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="윗몸일으키기" />
+
+            <RadioButton
+                android:id="@+id/radioButton9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="스쿼트" />
+
+            <RadioButton
+                android:id="@+id/radioButton10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="기타" />
+        </RadioGroup>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="n"
+        tools:layout_editor_absoluteX="384dp"
+        tools:layout_editor_absoluteY="166dp" />
 
 </android.support.constraint.ConstraintLayout>
