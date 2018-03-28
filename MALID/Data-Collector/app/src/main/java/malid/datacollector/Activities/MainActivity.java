@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     BluetoothDevice bluetoothDevice;
 
     Button btnServer;
-    RadioGroup rg1, rg2;
+    RadioGroup rg1;
     TextView txtState, txtTimer, txtByte, serverView;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     void initilaizeComponents() {
         rg1=(RadioGroup)findViewById(R.id.RG1);
-        rg2=(RadioGroup)findViewById(R.id.RG2);
         btnServer = (Button) findViewById(R.id.btnServer);
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
@@ -163,20 +162,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                else if(checkedId==R.id.radioButton3) Label=2;
                else if(checkedId==R.id.radioButton4) Label=3;
                else if(checkedId==R.id.radioButton5) Label=4;
+               else if(checkedId==R.id.radioButton6) Label=5;
+               else if(checkedId==R.id.radioButton7) Label=6;
+               else if(checkedId==R.id.radioButton8) Label=7;
+               else if(checkedId==R.id.radioButton9) Label=8;
+               else if(checkedId==R.id.radioButton10) Label=9;
                else Label=-1;
            }
        });
-        rg2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.radioButton6) Label=5;
-                else if(checkedId==R.id.radioButton7) Label=6;
-                else if(checkedId==R.id.radioButton8) Label=7;
-                else if(checkedId==R.id.radioButton9) Label=8;
-                else if(checkedId==R.id.radioButton10) Label=9;
-                else Label=-1;
-            }
-        });
+
         btnServer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -222,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void sendServer() {
-        txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
+        txtByte.setText("prev info : \n"+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : \n" +curr_step+"step "
                 +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : "+HR_list.toString());
     }
     void getInformation() { // 걸음수, 거리, 칼로리 정보
