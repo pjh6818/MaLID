@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,13 +53,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     BluetoothGatt bluetoothGatt;
     BluetoothDevice bluetoothDevice;
 
-    Button btnStartConnecting, btnServer;
-    EditText txtPhysicalAddress;
+    Button btnServer;
+    RadioGroup rg1, rg2;
     TextView txtState, txtTimer, txtByte, serverView;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
-
+    String address;
     private CounterService binder;
     private boolean running = false;
 ////////////////////////////////////////
@@ -70,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int time=0;
     int prev_step=0, prev_distance=0, prev_cal=0;
     int curr_step=0, curr_distance=0, curr_cal=0;
-    int Heart_rate=0;
+    int Heart_rate=0, Label=-1;
 
-    ArrayList<Integer> HR_list = new ArrayList<Integer>();
-
+    ArrayList<Integer> HR_list = new ArrayList();
+    ArrayList<Float> XYZ_list = new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,22 +103,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         tv2=(TextView)findViewById(R.id.accelview);
 
         // 센서객체를 얻어오기 위해서는 센서메니저를 통해서만 가능하다
-        sm = (SensorManager)
-                getSystemService(Context.SENSOR_SERVICE);
+        sm = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         sm2=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         s = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION); // 방향센서
         s2=sm2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
-    void getBoundedDevice() {   // MI Band 2 MAC address 자동등록
+    String getBoundedDevice() {   // MI Band 2 MAC address 자동등록
         Set<BluetoothDevice> boundedDevice = bluetoothAdapter.getBondedDevices();
         for (BluetoothDevice bd : boundedDevice) {
             if (bd.getName().contains("MI Band 2")) {
-                txtPhysicalAddress.setText(bd.getAddress());
+                address=bd.getAddress();
+                startConnecting();
             }
         }
+        return null;
     }
+    void startConnecting() {    // Mi band 2 연결
+        bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
 
+        Log.v("test", "Connecting to " + address);
+        Log.v("test", "Device name " + bluetoothDevice.getName());
+
+        bluetoothGatt = bluetoothDevice.connectGatt(this, true, bluetoothGattCallback);
+    }
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -136,9 +145,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void initilaizeComponents() {
-        btnStartConnecting = (Button) findViewById(R.id.btnStartConnecting);
+        rg1=(RadioGroup)findViewById(R.id.RG1);
+        rg2=(RadioGroup)findViewById(R.id.RG2);
         btnServer = (Button) findViewById(R.id.btnServer);
-        txtPhysicalAddress = (EditText) findViewById(R.id.txtPhysicalAddress);
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtByte = (TextView) findViewById(R.id.txtByte);
@@ -146,16 +155,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void initializeEvents() {
-        btnStartConnecting.setOnClickListener(new View.OnClickListener() {
+       rg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(RadioGroup group, int checkedId) {
+               if(checkedId==R.id.radioButton1) Label=0;
+               else if(checkedId==R.id.radioButton2) Label=1;
+               else if(checkedId==R.id.radioButton3) Label=2;
+               else if(checkedId==R.id.radioButton4) Label=3;
+               else if(checkedId==R.id.radioButton5) Label=4;
+               else Label=-1;
+           }
+       });
+        rg2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                startConnecting();
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId==R.id.radioButton6) Label=5;
+                else if(checkedId==R.id.radioButton7) Label=6;
+                else if(checkedId==R.id.radioButton8) Label=7;
+                else if(checkedId==R.id.radioButton9) Label=8;
+                else if(checkedId==R.id.radioButton10) Label=9;
+                else Label=-1;
             }
         });
         btnServer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(running == false) {   // 서버전송 시작
+                if(running == false && Label!=-1) {   // 서버전송 시작
                     prev_step=0;
                     prev_distance=0;
                     prev_cal=0;
@@ -164,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     curr_cal=0;
                     Heart_rate = 0;
                     HR_list.clear();
+                    XYZ_list.clear();
                     txtByte.setText("...");
                     txtTimer.setText("0");
 
@@ -179,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     thread = new Thread(hrthread);
                     thread.start();
                 }
-                else {      // 서버전송 종료
+                else if(running == true && Label!=-1){      // 서버전송 종료
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
                     btnServer.setText("Start");
                     getInformation();
@@ -188,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     running = false;
                     thread.interrupt();
                 }
-
+                else
+                    Toast.makeText(getApplicationContext(),"운동종류를 선택하세요.", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -229,9 +256,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     try {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("HeartRate", Heart_rate);
-                        //for(int i=0; i<HR_list.size(); i++) {
-                        // jsonObject.accumulate("HR_list",HR_list.get(i));
-                        //}
+                        jsonObject.accumulate("XYZ_list", XYZ_list);
+                        jsonObject.accumulate("Label", Label);
                         HttpURLConnection con = null;
                         BufferedReader reader = null;
 
@@ -263,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             while((line = reader.readLine()) != null){
                                 buffer.append(line);
                             }
+                            XYZ_list.clear();
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             Log.v("test", "receive data from server");
                         } catch (MalformedURLException e){
@@ -303,44 +330,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             super.onPostExecute(result);
         }
     }
-
-    /*
-    private class GetCountThread implements Runnable {
-        private Handler handler = new Handler();
-
-        @Override
-        public void run() {
-
-            Log.v("test", "CountThread start");
-            while(running) {
-                if ( binder == null ) {
-                    continue;
-                }
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {   // textview 갱신
-                            txtTimer.setText(binder.getCount() + "");
-                            time = binder.getCount();
-                            if(time!=0 && time%5==0) HR_list.add(Heart_rate);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.v("test", "GetCountThread is dead");
-        }
-    }
-    */
-
     private class HRThread implements Runnable {
 
         @Override
@@ -373,19 +362,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
     }
-
-    void startConnecting() {    // Mi band 2 연결
-
-        String address = txtPhysicalAddress.getText().toString();
-        bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
-
-        Log.v("test", "Connecting to " + address);
-        Log.v("test", "Device name " + bluetoothDevice.getName());
-
-        bluetoothGatt = bluetoothDevice.connectGatt(this, true, bluetoothGattCallback);
-    }
-
-
     void stateConnected() {
         bluetoothGatt.discoverServices();
         txtState.setText("Connected");
@@ -464,8 +440,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.v("test", "step : "+new_step);
                 Log.v("test", "distance : "+new_distance+"m");
                 Log.v("test", "cal : "+new_cal);
-
-                //txtByte.setText("step : " +step+"\n" + "distance : " + distance + "m\n"+"cal : " + cal);
             }
 
 
@@ -562,6 +536,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\nY : "+ event.values[1]
                     +"\nZ : "+ event.values[2];
             tv2.setText(str);
+            if(XYZ_list.size()<90){
+               XYZ_list.add(event.values[0]);
+               XYZ_list.add(event.values[1]);
+               XYZ_list.add(event.values[2]);
+            }
         }
     }
 
