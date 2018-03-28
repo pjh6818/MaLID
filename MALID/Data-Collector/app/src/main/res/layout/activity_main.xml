@@ -33,6 +33,11 @@
             android:layout_height="101dp"
             android:scrollHorizontally="false" />
 
+        <TextView
+            android:id="@+id/serverView"
+            android:layout_width="match_parent"
+            android:layout_height="69dp" />
+
     </LinearLayout>
 
     <LinearLayout
