@@ -26,6 +26,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import malid.datacollector.CounterService;
+import malid.datacollector.Helpers.CustomBluetoothProfile;
+import malid.datacollector.R;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,12 +45,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Set;
-
-import malid.datacollector.CounterService;
-import malid.datacollector.Helpers.CustomBluetoothProfile;
-import malid.datacollector.R;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Button btnStartConnecting, btnServer;
     EditText txtPhysicalAddress;
-    TextView txtState, txtTimer, txtByte, serverView;
+    TextView txtState, txtTimer, txtByte;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
@@ -140,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtByte = (TextView) findViewById(R.id.txtByte);
-        serverView = (TextView) findViewById(R.id.serverView);
     }
 
     void initializeEvents() {
@@ -193,92 +193,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void sendServer() {
-
-        JSONTask jsonTask = new JSONTask();  // JSONTask 생성
-        jsonTask.execute("http://13.125.101.194:3000/post");  // JSONTask 실행
-        Log.v("test", "send data to server");
-
         txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
                 +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : "+HR_list.toString());
     }
-
-    public class JSONTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                //jsonObject.accumulate("user_id", "androidTest");
-                //jsonObject.accumulate("name", "yun");
-                jsonObject.accumulate("TYPE", "0");
-                for(int i=0; i<HR_list.size(); i++) {
-                    jsonObject.accumulate("HR_list",HR_list.get(i));
-                }
-
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
-
-                try{
-                    //URL url = new URL("http://192.168.25.16:3000/users");
-                    URL url = new URL(urls[0]);
-                    con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Cache-Control", "no-cache");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    con.setRequestProperty("Accept", "text/html");
-                    con.setDoOutput(true);
-                    con.setDoInput(true);
-                    con.connect();
-
-                    OutputStream outStream = con.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                    writer.write(jsonObject.toString());
-                    writer.flush();
-                    writer.close();
-
-                    InputStream stream = con.getInputStream();
-
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    StringBuffer buffer = new StringBuffer();
-
-                    String line = "";
-                    while((line = reader.readLine()) != null){
-                        buffer.append(line);
-                    }
-
-                    return buffer.toString();
-
-                } catch (MalformedURLException e){
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if(con != null){
-                        con.disconnect();
-                    }
-                    try {
-                        if(reader != null){
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            serverView.setText(result);
-            Log.v("test", "receive data from server");
-        }
-    }
-
     void getInformation() { // 걸음수, 거리, 칼로리 정보
         BluetoothGattCharacteristic bchar = bluetoothGatt.getService(CustomBluetoothProfile.Information.service)
                 .getCharacteristic(CustomBluetoothProfile.Information.Characteristic);
@@ -287,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    public class CountAsyncTask extends AsyncTask<Integer, Integer, Integer> {
+    public class CountAsyncTask extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
@@ -297,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         @Override
-        protected Integer doInBackground(Integer... integers) {
+        protected String doInBackground(String... urls) {
             while(running){
                 try {
                     Thread.sleep(1000); // 1초 대기
@@ -306,19 +223,81 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 time ++;    // time 1증가
                 publishProgress();      // onProgressUpdate 호출
+                if(time!=0 && time%5==0){
+                    try {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.accumulate("HeartRate", Heart_rate);
+                        //for(int i=0; i<HR_list.size(); i++) {
+                        // jsonObject.accumulate("HR_list",HR_list.get(i));
+                        //}
+                        HttpURLConnection con = null;
+                        BufferedReader reader = null;
+
+                        try{
+                            //URL url = new URL("http://192.168.25.16:3000/users");
+                            URL url = new URL(urls[0]);
+                            con = (HttpURLConnection) url.openConnection();
+                            con.setRequestMethod("POST");
+                            con.setRequestProperty("Cache-Control", "no-cache");
+                            con.setRequestProperty("Content-Type", "application/json");
+                            con.setRequestProperty("Accept", "text/html");
+                            con.setDoOutput(true);
+                            con.setDoInput(true);
+                            con.connect();
+
+                            OutputStream outStream = con.getOutputStream();
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
+                            writer.write(jsonObject.toString());
+                            writer.flush();
+                            writer.close();
+
+                            InputStream stream = con.getInputStream();
+
+                            reader = new BufferedReader(new InputStreamReader(stream));
+
+                            StringBuffer buffer = new StringBuffer();
+
+                            String line = "";
+                            while((line = reader.readLine()) != null){
+                                buffer.append(line);
+                            }
+                        } catch (MalformedURLException e){
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if(con != null){
+                                con.disconnect();
+                            }
+                            try {
+                                if(reader != null){
+                                    reader.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+                    }
+                }
             }
-            return 0;
+            return null;
         }
 
         @Override
-        protected void onProgressUpdate(Integer... params) {
+        protected void onProgressUpdate(String... params) {
             txtTimer.setText(time + "");
-            if(time!=0 && time%5==0) HR_list.add(Heart_rate);
+            if(time!=0 && time%5==0) {
+                HR_list.add(Heart_rate);
+            }
         }
 
         @Override
-        protected void onPostExecute(Integer result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -507,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Heart_rate = data[1]&0xFF;
 
                     CountAsyncTask myAsyncTask = new CountAsyncTask();  // count 스레드생성
-                    myAsyncTask.execute();  // count 스레드실행
+                    myAsyncTask.execute("http://13.125.101.194:3000/post");  // count 스레드실행
                 }
                 else if((data[1]&0xFF)!=0){
                     Heart_rate = data[1]&0xFF;
@@ -586,6 +565,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // 센서의 정확도가 변경되었을 때 호출되는 콜백 메서드
     }
-
 }
 
