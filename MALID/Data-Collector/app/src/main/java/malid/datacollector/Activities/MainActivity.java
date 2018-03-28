@@ -26,6 +26,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -41,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Button btnStartConnecting, btnServer;
     EditText txtPhysicalAddress;
-    TextView txtState, txtTimer, txtByte;
+    TextView txtState, txtTimer, txtByte, serverView;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
@@ -128,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtByte = (TextView) findViewById(R.id.txtByte);
+        serverView = (TextView) findViewById(R.id.serverView);
     }
 
     void initializeEvents() {
@@ -181,8 +194,89 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     void sendServer() {
 
+        JSONTask jsonTask = new JSONTask();  // JSONTask 생성
+        jsonTask.execute("http://13.125.101.194:3000/post");  // JSONTask 실행
+        Log.v("test", "send data to server");
+
         txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
                 +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : "+HR_list.toString());
+    }
+
+    public class JSONTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                //jsonObject.accumulate("user_id", "androidTest");
+                //jsonObject.accumulate("name", "yun");
+                jsonObject.accumulate("TYPE", "0");
+                for(int i=0; i<HR_list.size(); i++) {
+                    jsonObject.accumulate("HR_list",HR_list.get(i));
+                }
+
+                HttpURLConnection con = null;
+                BufferedReader reader = null;
+
+                try{
+                    //URL url = new URL("http://192.168.25.16:3000/users");
+                    URL url = new URL(urls[0]);
+                    con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Cache-Control", "no-cache");
+                    con.setRequestProperty("Content-Type", "application/json");
+                    con.setRequestProperty("Accept", "text/html");
+                    con.setDoOutput(true);
+                    con.setDoInput(true);
+                    con.connect();
+
+                    OutputStream outStream = con.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
+                    writer.write(jsonObject.toString());
+                    writer.flush();
+                    writer.close();
+
+                    InputStream stream = con.getInputStream();
+
+                    reader = new BufferedReader(new InputStreamReader(stream));
+
+                    StringBuffer buffer = new StringBuffer();
+
+                    String line = "";
+                    while((line = reader.readLine()) != null){
+                        buffer.append(line);
+                    }
+
+                    return buffer.toString();
+
+                } catch (MalformedURLException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if(con != null){
+                        con.disconnect();
+                    }
+                    try {
+                        if(reader != null){
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            serverView.setText(result);
+            Log.v("test", "receive data from server");
+        }
     }
 
     void getInformation() { // 걸음수, 거리, 칼로리 정보
