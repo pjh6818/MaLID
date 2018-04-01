@@ -55,11 +55,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Button btnServer;
     RadioGroup rg1;
-    TextView txtState, txtTimer, txtByte, serverView;
+    TextView txtState, txtTimer, txtByte, txt_heart, serverView;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
-    String address;
+    String address = null;
     private CounterService binder;
     private boolean running = false;
 ////////////////////////////////////////
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         this.getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
 
-        initializeObjects();
+        //initializeObjects();
         initilaizeComponents();
         initializeEvents();
 
@@ -110,12 +110,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     String getBoundedDevice() {   // MI Band 2 MAC address 자동등록
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> boundedDevice = bluetoothAdapter.getBondedDevices();
         for (BluetoothDevice bd : boundedDevice) {
             if (bd.getName().contains("MI Band 2")) {
                 address=bd.getAddress();
                 startConnecting();
             }
+        }
+        if(address == null)
+        {
+            Toast.makeText(getApplicationContext(), "페어링 상태를 확인해주세요.", Toast.LENGTH_LONG).show();
         }
         return null;
     }
@@ -150,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtByte = (TextView) findViewById(R.id.txtByte);
+        txt_heart = (TextView)findViewById(R.id.txt_heart);
         serverView = (TextView) findViewById(R.id.serverView);
     }
 
@@ -184,7 +190,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Heart_rate = 0;
                     HR_list.clear();
                     XYZ_list.clear();
-                    txtByte.setText("...");
+                    txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
+                                    +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : ");
+                    txt_heart.setText("심박수 : ");
                     txtTimer.setText("0");
 
                     Toast.makeText(getApplicationContext(),"서버 전송을 시작합니다.", Toast.LENGTH_SHORT).show();
@@ -216,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void sendServer() {
-        txtByte.setText("prev info : \n"+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : \n" +curr_step+"step "
+        txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
                 +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : "+HR_list.toString());
     }
     void getInformation() { // 걸음수, 거리, 칼로리 정보
@@ -246,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 time ++;    // time 1증가
                 publishProgress();      // onProgressUpdate 호출
-                if(time!=0 && time%5==0){
+                /*if(time!=0 && time%5==0){
                     try {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("HeartRate", Heart_rate);
@@ -284,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buffer.append(line);
                             }
                             XYZ_list.clear();
-                            serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
+                            //serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             Log.v("test", "receive data from server");
                         } catch (MalformedURLException e){
                             e.printStackTrace();
@@ -306,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                         e.printStackTrace();
                     }
-                }
+                }*/
             }
             return null;
         }
@@ -314,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         protected void onProgressUpdate(String... params) {
             txtTimer.setText(time + "");
+            txt_heart.setText("심박수 : " + Heart_rate);
             if(time!=0 && time%5==0) {
                 HR_list.add(Heart_rate);
             }
@@ -337,12 +346,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
 
                 while(running){
+
                     try {
                         startScanHeartRate();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     try {
                         Thread.sleep(15000);
                     } catch (InterruptedException e) {
@@ -448,8 +457,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
-            //Log.v("test", "onCharacteristicChanged");
+            Log.v("test", "onCharacteristicChanged");
             byte[] data = characteristic.getValue();
+            Log.v("test", Integer.toString(data.length));
+
             if(data.length == 2){
                 Log.v("test", "HR : "+data[1]);
                 //if(running) HR_list.add(data[1]&0xFF);
