@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     ArrayList<Integer> HR_list = new ArrayList();
     ArrayList<Float> XYZ_list = new ArrayList();
+    ArrayList<Float> Gyro_list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -274,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("HeartRate", Heart_rate);
                         jsonObject.accumulate("XYZ_list", XYZ_list);
+                        jsonObject.accumulate("Gyro_list", Gyro_list);
                         jsonObject.accumulate("Label", Label);
                         jsonObject.accumulate("Name", nametag);
                         HttpURLConnection con = null;
@@ -308,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buffer.append(line);
                             }
                             XYZ_list.clear();
+                            Gyro_list.clear();
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             Log.v("test", "receive data from server");
                         } catch (MalformedURLException e){
@@ -550,6 +553,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\n피치 : "+event.values[1]
                     +"\n롤 : "+event.values[2];
             tv.setText(str);
+            if(Gyro_list.size() < 90){
+                Log.d("gyro", Float.toString(event.values[0]));
+                Gyro_list.add(event.values[0]);
+                Gyro_list.add(event.values[1]);
+                Gyro_list.add(event.values[2]);
+            }
         }
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             String str = "가속센서값"
