@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="7dp"
             android:layout_marginStart="7dp"
             android:layout_weight="1"
@@ -35,6 +35,46 @@
                 android:layout_weight="0.9" />
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/RG2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/park"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="박종현" />
+
+                <RadioButton
+                    android:id="@+id/kim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="김태영" />
+
+                <RadioButton
+                    android:id="@+id/ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="옥준영" />
+
+                <RadioButton
+                    android:id="@+id/song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="송민규" />
+            </RadioGroup>
+        </LinearLayout>
         <HorizontalScrollView
             android:id="@+id/scrollview1"
             android:layout_width="match_parent"
@@ -42,7 +82,7 @@
 
                 <RadioGroup
                     android:id="@+id/RG1"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
