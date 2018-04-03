@@ -272,6 +272,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 time ++;    // time 1증가
                 publishProgress();      // onProgressUpdate 호출
                 if(time!=0 && time%5==0){
+                    if(XYZ_list.size() < 150)continue;
+                    Log.d("sensor", XYZ_list.toString());
                     try {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("Name", nametag);
@@ -282,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         jsonObject.accumulate("Label", Label);
                         HttpURLConnection con = null;
                         BufferedReader reader = null;
-                        XYZ_list.clear();
 
                         try{
                             //URL url = new URL("http://192.168.25.16:3000/users");
@@ -334,6 +335,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                         e.printStackTrace();
                     }
+
+                    XYZ_list.clear();
                 }
             }
             return null;
