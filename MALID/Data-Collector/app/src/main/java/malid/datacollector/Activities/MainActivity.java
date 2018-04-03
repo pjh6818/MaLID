@@ -581,15 +581,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         public void run() {
             super.run();
             while(running){
+                if(XYZ_list.size()>149)continue;
+                XYZ_list.add(Acc_X);
+                XYZ_list.add(Acc_Y);
+                XYZ_list.add(Acc_Z);
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if(XYZ_list.size()>149)continue;
-                XYZ_list.add(Acc_X);
-                XYZ_list.add(Acc_Y);
-                XYZ_list.add(Acc_Z);
             }
         }
     }
