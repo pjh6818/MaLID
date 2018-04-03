@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
+    SensorThread sensor_thread;
     String address = null;
     private CounterService binder;
     private boolean running = false;
@@ -73,10 +74,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int curr_step=0, curr_distance=0, curr_cal=0;
     int Heart_rate=0, Label=-1;
     int nametag=-1;
+    float Acc_X, Acc_Y, Acc_Z;
 
     ArrayList<Integer> HR_list = new ArrayList();
     ArrayList<Float> XYZ_list = new ArrayList();
-    ArrayList<Float> Gyro_list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -275,11 +276,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("Name", nametag);
                         jsonObject.accumulate("HeartRate", Heart_rate);
+                        Log.d("sensorlength", Integer.toString(XYZ_list.size()));
                         jsonObject.accumulate("XYZ_list", XYZ_list);
                         //jsonObject.accumulate("Gyro_list", Gyro_list);
                         jsonObject.accumulate("Label", Label);
                         HttpURLConnection con = null;
                         BufferedReader reader = null;
+                        XYZ_list.clear();
 
                         try{
                             //URL url = new URL("http://192.168.25.16:3000/users");
@@ -309,8 +312,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             while((line = reader.readLine()) != null){
                                 buffer.append(line);
                             }
-                            XYZ_list.clear();
-                            Gyro_list.clear();
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             Log.v("test", "receive data from server");
                         } catch (MalformedURLException e){
@@ -488,6 +489,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                     CountAsyncTask myAsyncTask = new CountAsyncTask();  // count 스레드생성
                     myAsyncTask.execute("http://13.125.101.194:3000/post");  // count 스레드실행
+                    sensor_thread = new SensorThread();
+                    sensor_thread.start();
                 }
                 else if((data[1]&0xFF)!=0){
                     Heart_rate = data[1]&0xFF;
@@ -553,12 +556,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\n피치 : "+event.values[1]
                     +"\n롤 : "+event.values[2];
             tv.setText(str);
-            /*if(Gyro_list.size() < 90){
-                Log.d("gyro", Float.toString(event.values[0]));
-                Gyro_list.add(event.values[0]);
-                Gyro_list.add(event.values[1]);
-                Gyro_list.add(event.values[2]);
-            }*/
         }
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             String str = "가속센서값"
@@ -566,16 +563,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\nY : "+ event.values[1]
                     +"\nZ : "+ event.values[2];
             tv2.setText(str);
-            if(XYZ_list.size()<150){
-               XYZ_list.add(event.values[0]);
-               XYZ_list.add(event.values[1]);
-               XYZ_list.add(event.values[2]);
-            }
+            Acc_X = event.values[0];
+            Acc_Y = event.values[1];
+            Acc_Z = event.values[2];
         }
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // 센서의 정확도가 변경되었을 때 호출되는 콜백 메서드
+    }
+    // 가속도 센서 데이터 Arraylist에 저장
+    private class SensorThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            while(running){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(XYZ_list.size()>149)continue;
+                XYZ_list.add(Acc_X);
+                XYZ_list.add(Acc_Y);
+                XYZ_list.add(Acc_Z);
+            }
+        }
     }
 }
 
