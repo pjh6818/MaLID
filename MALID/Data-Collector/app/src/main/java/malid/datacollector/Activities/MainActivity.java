@@ -273,11 +273,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(time!=0 && time%5==0){
                     try {
                         JSONObject jsonObject = new JSONObject();
+                        jsonObject.accumulate("Name", nametag);
                         jsonObject.accumulate("HeartRate", Heart_rate);
                         jsonObject.accumulate("XYZ_list", XYZ_list);
-                        jsonObject.accumulate("Gyro_list", Gyro_list);
+                        //jsonObject.accumulate("Gyro_list", Gyro_list);
                         jsonObject.accumulate("Label", Label);
-                        jsonObject.accumulate("Name", nametag);
                         HttpURLConnection con = null;
                         BufferedReader reader = null;
 
@@ -553,12 +553,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\n피치 : "+event.values[1]
                     +"\n롤 : "+event.values[2];
             tv.setText(str);
-            if(Gyro_list.size() < 90){
+            /*if(Gyro_list.size() < 90){
                 Log.d("gyro", Float.toString(event.values[0]));
                 Gyro_list.add(event.values[0]);
                 Gyro_list.add(event.values[1]);
                 Gyro_list.add(event.values[2]);
-            }
+            }*/
         }
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             String str = "가속센서값"
@@ -566,7 +566,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     +"\nY : "+ event.values[1]
                     +"\nZ : "+ event.values[2];
             tv2.setText(str);
-            if(XYZ_list.size()<90){
+            if(XYZ_list.size()<150){
                XYZ_list.add(event.values[0]);
                XYZ_list.add(event.values[1]);
                XYZ_list.add(event.values[2]);
