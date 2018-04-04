@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             .setContentTitle("운동관리시스템")
                             .setContentText("현재 운동 측정중입니다.")
                             .setDefaults(Notification.DEFAULT_ALL)
+                                    .setOngoing(true)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                             .setAutoCancel(true)
                                     .setWhen(System.currentTimeMillis());
