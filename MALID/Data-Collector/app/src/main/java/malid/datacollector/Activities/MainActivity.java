@@ -237,11 +237,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             .setAutoCancel(true)
                                     .setWhen(System.currentTimeMillis());
                             //.setContentIntent(mPendingIntent);
-                   /* if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                         mBuilder.setCategory(Notification.CATEGORY_MESSAGE)
                                 .setPriority(Notification.PRIORITY_HIGH)
                                 .setVisibility(Notification.VISIBILITY_PUBLIC);
-                    }*/
+                    }
                    mNotificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     mNotificationManager.notify(1234,mBuilder.build());
                     btnServer.setText("Stop");
