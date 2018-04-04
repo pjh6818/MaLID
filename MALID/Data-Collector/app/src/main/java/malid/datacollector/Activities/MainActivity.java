@@ -1,5 +1,8 @@
 package malid.datacollector.Activities;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -18,6 +21,7 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView tv,tv2;
     private SensorManager sm,sm2;
     private Sensor s,s2; //옥이 추가
+    public  NotificationManager mNotificationManager;
     // ////////////////////////////////////
     Intent intent;
     int time=0;
@@ -213,6 +218,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     txtTimer.setText("0");
 
                     Toast.makeText(getApplicationContext(),"서버 전송을 시작합니다.", Toast.LENGTH_SHORT).show();
+                    PendingIntent mPendingIntent = PendingIntent.getActivity(
+                            MainActivity.this,
+                            0,
+                            new Intent(getApplicationContext(),MainActivity.class),
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(MainActivity.this);
+
+                            mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
+                            .setContentTitle("운동관리시스템")
+                            .setContentText("현재 운동 측정중입니다.")
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setAutoCancel(true)
+                                    .setWhen(System.currentTimeMillis());
+                            //.setContentIntent(mPendingIntent);
+                   /* if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        mBuilder.setCategory(Notification.CATEGORY_MESSAGE)
+                                .setPriority(Notification.PRIORITY_HIGH)
+                                .setVisibility(Notification.VISIBILITY_PUBLIC);
+                    }*/
+                   mNotificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(1234,mBuilder.build());
                     btnServer.setText("Stop");
                     getInformation();
 
@@ -226,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 else if(running == true){      // 서버전송 종료
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
+                    mNotificationManager.cancel(1234);
                     btnServer.setText("Start");
                     getInformation();
 
