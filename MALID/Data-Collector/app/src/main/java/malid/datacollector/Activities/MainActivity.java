@@ -546,8 +546,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onPause() { // 화면을 빠져나가면 즉시 센서자원 반납해야함!!
         super.onPause();
-        sm.unregisterListener(this); // 반납할 센서
-        sm2.unregisterListener(this);
+        //sm.unregisterListener(this); // 반납할 센서
+        //sm2.unregisterListener(this);
     }
 
     public void onSensorChanged(SensorEvent event) {
