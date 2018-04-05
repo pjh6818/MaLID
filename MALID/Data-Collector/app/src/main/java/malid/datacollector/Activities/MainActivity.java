@@ -26,7 +26,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,6 +82,25 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     ArrayList<Integer> HR_list = new ArrayList();
     ArrayList<Float> XYZ_list = new ArrayList();
+
+    @Override
+    protected void onDestroy(){
+        mNotificationManager.cancel(1234);
+        running = false;
+        thread.interrupt();
+        sensor_thread.interrupt();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory(){
+        mNotificationManager.cancel(1234);
+        running = false;
+        thread.interrupt();
+        sensor_thread.interrupt();
+        super.onLowMemory();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
