@@ -85,19 +85,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     protected void onDestroy(){
-        mNotificationManager.cancel(1234);
-        running = false;
-        thread.interrupt();
-        sensor_thread.interrupt();
+        if(running==true) {
+            mNotificationManager.cancel(1234);
+            running = false;
+            thread.interrupt();
+            sensor_thread.interrupt();
+        }
         super.onDestroy();
     }
 
     @Override
     public void onLowMemory(){
-        mNotificationManager.cancel(1234);
-        running = false;
-        thread.interrupt();
-        sensor_thread.interrupt();
+        if(running==true) {
+            mNotificationManager.cancel(1234);
+            running = false;
+            thread.interrupt();
+            sensor_thread.interrupt();
+        }
         super.onLowMemory();
     }
 
