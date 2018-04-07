@@ -21,6 +21,7 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,13 +30,6 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Set;
-
-import malid.datacollector.CounterService;
-import malid.datacollector.Helpers.CustomBluetoothProfile;
-import malid.datacollector.R;
 
 import org.json.JSONObject;
 
@@ -49,6 +43,12 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Set;
+
+import malid.datacollector.CounterService;
+import malid.datacollector.Helpers.CustomBluetoothProfile;
+import malid.datacollector.R;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     String address = null;
     private CounterService binder;
     private boolean running = false;
+    private static PowerManager.WakeLock wakelock;
 ////////////////////////////////////////
     private TextView tv,tv2;
     private SensorManager sm,sm2;
@@ -313,6 +314,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             super.onPreExecute();
             txtTimer = (TextView) findViewById(R.id.txtTimer);
             time = 0;
+
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);   // get PowerManager
+            wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "wakelock");  // cpu 깨어있도록 설정
+            wakelock.acquire(); // wakelock 사용
         }
 
         @Override
@@ -408,6 +413,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if(wakelock.isHeld())
+                wakelock.release(); // wakelock 해제
         }
     }
     private class HRThread implements Runnable {
