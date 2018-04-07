@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         super.onDestroy();
     }
-
     @Override
     public void onLowMemory(){
         if(running==true) {
@@ -213,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 else if(checkedname==R.id.kim)nametag=2;
                 else if(checkedname==R.id.ok)nametag=3;
                 else if(checkedname==R.id.song)nametag=4;
+                else if(checkedname==R.id.test)nametag=5;
                 else nametag =-1;
             }
         });

@@ -73,6 +73,13 @@
                     android:layout_height="wrap_content"
 
                     android:text="송민규" />
+
+                <RadioButton
+                    android:id="@+id/test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="테스트" />
             </RadioGroup>
         </LinearLayout>
         <HorizontalScrollView
