@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 tf.set_random_seed(777)
-xy=np.loadtxt('stop_walk_run_train_park.txt', delimiter=',', dtype=np.float32)
+xy=np.loadtxt('stop_walk_run_train_pjh.txt', delimiter=',', dtype=np.float32)
 
 pre_hr=xy[:, [0]]
 pre_xyz_data=xy[:, 1:145]
@@ -116,7 +116,7 @@ with tf.Session() as sess:
     if checkpoint and checkpoint.model_checkpoint_path:
         checkpoint_name=os.path.basename(checkpoint.model_checkpoint_path)
         saver.restore(sess, os.path.join(path, checkpoint_name))
-    xy=np.loadtxt('stop_walk_run_test_park.txt', delimiter=',', dtype=np.float32)
+    xy=np.loadtxt('stop_walk_run_test_pjh.txt', delimiter=',', dtype=np.float32)
     xyz_data=xy[:,1:145]
     xyz_data=np.sort(xyz_data, axis=1)
     hr=xy[:,[0]]
