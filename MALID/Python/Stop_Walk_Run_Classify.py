@@ -68,6 +68,7 @@ checkpoint_dir='model'
 model_name='stop_walk_run'
 path=os.path.join(checkpoint_dir, model_name)
 
+#트레인 세션
 with tf.Session() as sess:
     checkpoint=tf.train.get_checkpoint_state(path)
     
@@ -107,7 +108,7 @@ with tf.Session() as sess:
         avg_acc += acc / total_batch
     print('accuracy for training data : ', '{:.9f}'.format(avg_acc))
 
-
+#테스트 세션
 with tf.Session() as sess:
     checkpoint=tf.train.get_checkpoint_state(path)
     
