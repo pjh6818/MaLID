@@ -221,6 +221,12 @@
                 android:layout_height="wrap_content"
                 android:text="Information"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="현재 운동 : "
+                android:textStyle="bold"/>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="300dp">
