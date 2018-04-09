@@ -57,7 +57,7 @@ sess=tf.Session()
 
 
 hypothesis=model(HR, XYZ_reshape)
-cost=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=hypothesis, labels=Y_one_hot))
+cost=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=hypothesis, labels=Y_one_hot))
 train=tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
 
 correct_prediction = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(Y_one_hot, 1))
