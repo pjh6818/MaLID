@@ -221,12 +221,22 @@
                 android:layout_height="wrap_content"
                 android:text="Information"
                 android:textStyle="bold" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="현재 운동 : "
+        android:textStyle="bold"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="15dp"
+        android:layout_height="20dp" />
+</LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="현재 운동 : "
-                android:textStyle="bold"/>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="300dp">
