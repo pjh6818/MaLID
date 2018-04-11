@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(MainActivity.this);
 
-                            mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground)
+                            mBuilder.setSmallIcon(R.drawable.mainbackground)
                             .setContentTitle("운동관리시스템")
                             .setContentText("현재 운동 측정중입니다.")
                             .setDefaults(Notification.DEFAULT_ALL)
