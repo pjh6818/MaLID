@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             thread.interrupt();
             sensor_thread.interrupt();
         }
+        Log.v("test", "OnDestroy");
         super.onDestroy();
     }
     @Override

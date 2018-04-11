@@ -127,5 +127,5 @@ with tf.Session() as sess:
     hr/=np.std(pre_hr, axis=0)
     acc = sess.run(accuracy, feed_dict={XYZ:xyz_data, HR:hr, label:Label})
     print('accuracy for test data : ', acc)
-    #print("Label: ", Label)
+    #print("Label: ", Label[:, 0])
     #print("Prediction: ", sess.run(tf.argmax(hypothesis, 1), feed_dict={XYZ:xyz_data, HR:hr}))
