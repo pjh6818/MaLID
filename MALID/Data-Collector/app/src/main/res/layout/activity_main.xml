@@ -87,85 +87,56 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-                <RadioGroup
-                    android:id="@+id/RG1"
+            <RadioGroup
+                android:id="@+id/RG1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="정지" />
 
-                    <RadioButton
-                        android:id="@+id/radioButton1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="정지" />
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:text="걷기" />
 
-                        android:text="걷기" />
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <RadioButton
-                        android:id="@+id/radioButton3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:text="달리기" />
 
-                        android:text="달리기" />
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:text="걷기(손)" />
 
-                        android:text="자전거" />
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <RadioButton
-                        android:id="@+id/radioButton5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:text="달리기(손)" />
 
-                        android:text="계단오르기" />
+                <RadioButton
+                    android:id="@+id/radioButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <RadioButton
-                        android:id="@+id/radioButton6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="러닝머신" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="팔굽혀펴기" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="윗몸일으키기" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="스쿼트" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="기타" />
+                    android:text="자전거" />
 
 
-
-                </RadioGroup>
+            </RadioGroup>
         </HorizontalScrollView>
         <LinearLayout
             android:id="@+id/linearLayout3"
@@ -221,25 +192,25 @@
                 android:layout_height="wrap_content"
                 android:text="Information"
                 android:textStyle="bold" />
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="현재 운동 : "
-        android:textStyle="bold"/>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="15dp"
-        android:layout_height="20dp" />
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="현재 운동 : "
+                    android:textStyle="bold"/>
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="15dp"
+                    android:layout_height="20dp" />
+            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="300dp">
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -257,7 +228,7 @@
                     <TextView
                         android:id="@+id/serverView"
                         android:layout_width="match_parent"
-                        android:layout_height="20dp" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 

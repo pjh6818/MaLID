@@ -200,10 +200,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                else if(checkedId==R.id.radioButton4) Label=3;
                else if(checkedId==R.id.radioButton5) Label=4;
                else if(checkedId==R.id.radioButton6) Label=5;
-               else if(checkedId==R.id.radioButton7) Label=6;
-               else if(checkedId==R.id.radioButton8) Label=7;
-               else if(checkedId==R.id.radioButton9) Label=8;
-               else if(checkedId==R.id.radioButton10) Label=9;
                else Label=-1;
            }
        });
@@ -372,6 +368,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             String line = "";
                             while((line = reader.readLine()) != null){
                                 buffer.append(line);
+                                buffer.append("\n");
                             }
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             Log.v("test", "receive data from server");
