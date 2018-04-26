@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Button btnServer;
     RadioGroup rg1, rg2;
     TextView txtState, txtTimer, txtByte, txt_heart, serverView;
+    ScrollView servscroll;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
@@ -188,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtByte = (TextView) findViewById(R.id.txtByte);
         txt_heart = (TextView)findViewById(R.id.txt_heart);
         serverView = (TextView) findViewById(R.id.serverView);
+        servscroll = (ScrollView) findViewById(R.id.serverscroll);
     }
 
     void initializeEvents() {
@@ -370,7 +373,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buffer.append(line);
                                 buffer.append("\n");
                             }
+
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
+                            serverView.invalidate();
+                            serverView.requestLayout();
+                            servscroll.invalidate();
+                            servscroll.requestLayout();
+                            servscroll.fullScroll(ScrollView.FOCUS_DOWN);
                             Log.v("test", "receive data from server");
                         } catch (MalformedURLException e){
                             e.printStackTrace();
