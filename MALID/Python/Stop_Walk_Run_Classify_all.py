@@ -148,6 +148,8 @@ with tf.Session() as sess:
     print('accuracy for test data : ', acc)
     print("Label: ", len(Label_test[:,0]))
     print("Prediction: ", sess.run(tf.argmax(hypothesis, 1), feed_dict={XYZ:xyz_data_test, HR:hr_test}))
+
+
 # In[ ]:
 
 
