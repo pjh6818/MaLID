@@ -59,13 +59,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Button btnServer;
     RadioGroup rg1, rg2;
-    TextView txtState, txtTimer, txtByte, txt_heart, serverView;
+    TextView txtState, txtTimer, txtByte, txt_heart, serverView, txtID;
     ScrollView servscroll;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
     SensorThread sensor_thread;
     String address = null;
+    String ID = null;
     private CounterService binder;
     private boolean running = false;
     private static PowerManager.WakeLock wakelock;
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        ID = intent.getStringExtra("ID");
 
         int uiOptions = this.getWindow().getDecorView().getSystemUiVisibility();
         int newUiOptions = uiOptions;
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initializeObjects();
         initilaizeComponents();
         initializeEvents();
-
+        txtID.setText(ID);
         getBoundedDevice();
 
         tv = (TextView)findViewById(R.id.orientview);
@@ -182,8 +185,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void initilaizeComponents() {
-        rg1=(RadioGroup)findViewById(R.id.RG1);
-        rg2=(RadioGroup)findViewById(R.id.RG2);
+        // rg1=(RadioGroup)findViewById(R.id.RG1);
+        // rg2=(RadioGroup)findViewById(R.id.RG2);
         btnServer = (Button) findViewById(R.id.btnServer);
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
@@ -191,9 +194,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txt_heart = (TextView)findViewById(R.id.txt_heart);
         serverView = (TextView) findViewById(R.id.serverView);
         servscroll = (ScrollView) findViewById(R.id.serverscroll);
+        txtID = (TextView) findViewById(R.id.txtID);
     }
 
     void initializeEvents() {
+        /*
        rg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -216,16 +221,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 else if(checkedname==R.id.test)nametag=5;
                 else nametag =-1;
             }
-        });
+        });*/
 
         btnServer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(Label == -1)
-                    Toast.makeText(getApplicationContext(),"운동종류를 선택하세요.", Toast.LENGTH_SHORT).show();
-                else if(nametag == -1)
-                    Toast.makeText(getApplicationContext(),"이름을 선택하세요.", Toast.LENGTH_SHORT).show();
-                else if(running == false) {   // 서버전송 시작
+                if(running == false) {   // 서버전송 시작
                     prev_step=0;
                     prev_distance=0;
                     prev_cal=0;
@@ -335,12 +336,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Log.d("sensor", XYZ_list.toString());
                     try {
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.accumulate("Name", nametag);
+                        jsonObject.accumulate("ID", ID);
                         jsonObject.accumulate("HeartRate", Heart_rate);
                         Log.d("sensorlength", Integer.toString(XYZ_list.size()));
                         jsonObject.accumulate("XYZ_list", XYZ_list);
                         //jsonObject.accumulate("Gyro_list", Gyro_list);
-                        jsonObject.accumulate("Label", Label);
                         HttpURLConnection con = null;
                         BufferedReader reader = null;
 
@@ -662,4 +662,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 }
+
 

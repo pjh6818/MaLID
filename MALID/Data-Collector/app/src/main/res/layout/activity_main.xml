@@ -13,8 +13,8 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginEnd="7dp"
             android:layout_marginStart="7dp"
             android:layout_weight="1"
@@ -35,109 +35,32 @@
                 android:layout_weight="0.9" />
 
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/RG2"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:id="@+id/park"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="박종현" />
+                android:layout_weight="0.1"
+                android:text="ID :"
+                android:textStyle="bold" />
 
-                <RadioButton
-                    android:id="@+id/kim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="김태영" />
-
-                <RadioButton
-                    android:id="@+id/ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="옥준영" />
-
-                <RadioButton
-                    android:id="@+id/song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="송민규" />
-
-                <RadioButton
-                    android:id="@+id/test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="테스트" />
-            </RadioGroup>
-        </LinearLayout>
-        <HorizontalScrollView
-            android:id="@+id/scrollview1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RadioGroup
-                android:id="@+id/RG1"
+            <TextView
+                android:id="@+id/txtID"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9" />
 
-                <RadioButton
-                    android:id="@+id/radioButton1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="정지" />
+        </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="걷기" />
-
-                <RadioButton
-                    android:id="@+id/radioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="달리기" />
-
-                <RadioButton
-                    android:id="@+id/radioButton4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="걷기(손)" />
-
-                <RadioButton
-                    android:id="@+id/radioButton5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="달리기(손)" />
-
-                <RadioButton
-                    android:id="@+id/radioButton6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="자전거" />
-
-
-            </RadioGroup>
-        </HorizontalScrollView>
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
