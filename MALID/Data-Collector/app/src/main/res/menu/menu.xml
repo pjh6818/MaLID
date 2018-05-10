@@ -2,8 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/input_ID"
-        android:title="ID입력">
+        android:id="@+id/login"
+        android:title="LOGIN">
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:title="LOGOUT">
+    </item>
+    <item
+        android:id="@+id/join"
+        android:title="JOIN">
     </item>
 
 </menu>
