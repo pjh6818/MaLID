@@ -180,7 +180,7 @@ public class mainmenu extends AppCompatActivity{
                             Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
                         }
                         else{
-                            new LoginTask().execute(join_url);
+                            new JoinTask().execute(join_url);
                         }
                     }
                 });
