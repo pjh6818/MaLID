@@ -5,43 +5,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/titlebackground"
-        android:layout_width="400dp"
-        android:layout_height="340dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/mainback" />
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="운동관리시스템"
-        android:textSize="25pt"/>
+            <ImageView
+                android:id="@+id/titlebackground"
+                android:layout_width="400dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/mainback" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_gravity="center"
+                android:text="운동관리시스템"
+                android:textSize="30dp"/>
 
-    <Button
-        android:id="@+id/historygo"
-        android:background="@drawable/buttonbg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2px"
-        android:layout_gravity="center"
-        android:text="운동기록보기"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <Button
+                    android:id="@+id/historygo"
+                    android:background="@drawable/buttonbg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2px"
+                    android:layout_gravity="center"
+                    android:text="운동기록보기"/>
 
-    <Button
-        android:id="@+id/recordgo"
-        android:background="@drawable/buttonbg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="운동측정하기"/>
+                <Button
+                    android:id="@+id/recordgo"
+                    android:background="@drawable/buttonbg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="운동측정하기"/>
 
-</LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>
