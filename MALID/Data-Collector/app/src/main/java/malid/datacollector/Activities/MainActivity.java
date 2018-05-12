@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtID.setText(ID);
         getBoundedDevice();
 
-        tv = (TextView)findViewById(R.id.orientview);
+        //tv = (TextView)findViewById(R.id.orientview);
         tv2=(TextView)findViewById(R.id.accelview);
 
         // 센서객체를 얻어오기 위해서는 센서메니저를 통해서만 가능하다
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     XYZ_list.clear();
                     txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
                                     +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : ");
-                    txt_heart.setText("심박수 : ");
+                    //txt_heart.setText("심박수 : ");
                     txtTimer.setText("0");
 
                     Toast.makeText(getApplicationContext(),"서버 전송을 시작합니다.", Toast.LENGTH_SHORT).show();
@@ -411,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         protected void onProgressUpdate(String... params) {
             txtTimer.setText(time + "");
-            txt_heart.setText("심박수 : " + Heart_rate);
+            txt_heart.setText(""+ Heart_rate);
             if(time!=0 && time%5==0) {
                 HR_list.add(Heart_rate);
             }
@@ -458,12 +458,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     void stateConnected() {
         bluetoothGatt.discoverServices();
-        txtState.setText("Connected");
+        txtState.setText("정상");
     }
 
     void stateDisconnected() {
         bluetoothGatt.disconnect();
-        txtState.setText("Disconnected");
+        txtState.setText("연결되지 않음");
     }
 
     void startScanHeartRate() {
@@ -620,19 +620,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void onSensorChanged(SensorEvent event) {
         // 센서값이 변경되었을 때 호출되는 콜백 메서드
-        if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+        /*if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
             // 방향센서값이 변경된거라면
             String str = "방향센서값"
                     +"\n방위각: "+event.values[0]
                     +"\n피치 : "+event.values[1]
                     +"\n롤 : "+event.values[2];
             tv.setText(str);
-        }
+        }*/
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             String str = "가속센서값"
-                    +"\nX : "+ event.values[0]
-                    +"\nY : "+ event.values[1]
-                    +"\nZ : "+ event.values[2];
+                    +" X : "+ (int)event.values[0]
+                    +" Y : "+ (int)event.values[1]
+                    +" Z : "+ (int)event.values[2];
             tv2.setText(str);
             Acc_X = event.values[0];
             Acc_Y = event.values[1];

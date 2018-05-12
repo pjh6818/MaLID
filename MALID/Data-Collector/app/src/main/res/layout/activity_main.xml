@@ -12,11 +12,13 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+            android:id="@+id/okok"
+            android:background="@drawable/buttonbg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="7dp"
             android:layout_marginStart="7dp"
+            android:layout_marginBottom="1px"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -25,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="State:"
+                android:text="미밴드 접속 상태:"
                 android:textStyle="bold" />
 
             <TextView
@@ -33,18 +35,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="370dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
-            android:layout_marginStart="7dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,42 +52,76 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:background="@drawable/buttonbg"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/heart"/>
+                <TextView
+                    android:id="@+id/txt_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.4"
+                    android:textSize="30dp"
+                    android:text="미측정"/>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/timer"/>
+                <TextView
+                    android:id="@+id/txtTimer"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.4"
+                    android:text="0"
+                    android:textSize="30dp" />
+
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/accelview"
+                android:layout_width="500dp"
+                android:layout_height="20dp"
+                android:text="가속도센서 결과창"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="70dp"
             android:layout_marginBottom="1dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtTimer"
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/orientview"
-                    android:layout_width="130dp"
-                    android:layout_height="80dp"
-                    android:text="방향센서 결과창"
-                    />
-                <TextView
-                    android:id="@+id/accelview"
-                    android:layout_width="130dp"
-                    android:layout_height="80dp"
-                    android:text="가속도센서 결과창"/>
-
-            </LinearLayout>
 
 
             <Button
                 android:id="@+id/btnServer"
+                android:background="@drawable/buttonbg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Start" />
+                android:text="측정 시작" />
 
         </LinearLayout>
         <LinearLayout
@@ -141,11 +165,6 @@
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/txtByte"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/txt_heart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 

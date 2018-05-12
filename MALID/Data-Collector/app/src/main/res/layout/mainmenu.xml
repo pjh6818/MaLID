@@ -27,13 +27,16 @@
 
     <Button
         android:id="@+id/historygo"
+        android:background="@drawable/buttonbg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2px"
         android:layout_gravity="center"
         android:text="운동기록보기"/>
 
     <Button
         android:id="@+id/recordgo"
+        android:background="@drawable/buttonbg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
