@@ -37,8 +37,9 @@ import malid.datacollector.R;
  */
 public class mainmenu extends AppCompatActivity{
 
-    public String ID = "";    // 사용자 ID
-    public String Passwd = "";    // 사용자 passwd
+    public String ID = "", joinID = "";    // 사용자 ID
+    public String Passwd = "", joinPW = "";    // 사용자 passwd
+    public String PW_check = "";    // passwd 확인
     View dialogView;
     EditText temp1;
     CheckBox checkBox = null;
@@ -46,6 +47,7 @@ public class mainmenu extends AppCompatActivity{
     SharedPreferences sf;
     SharedPreferences.Editor editor;
     String login_url = "http://13.125.101.194:3000/login";
+    String join_url = "http://13.125.101.194:3000/join";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +94,10 @@ public class mainmenu extends AppCompatActivity{
         editor = sf.edit();
         ID = sf.getString("ID", "");
         Passwd = sf.getString("Passwd","");
-        Log.v("test", "init_login ----------");
+        Log.v("test", "init_login");
         Log.v("test", "ID : "+ID+" Passwd : "+Passwd);
         if(!ID.isEmpty() && !Passwd.isEmpty()) {
-            new JSONTask().execute(login_url);
+            new LoginTask().execute(login_url);
         }
     }
 
@@ -111,12 +113,13 @@ public class mainmenu extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.login:
+            case R.id.login:        // login
                 if(login == false){
                     dialogView = (View) View.inflate(mainmenu.this, R.layout.dialog_login, null);
                     AlertDialog.Builder dlg = new AlertDialog.Builder(mainmenu.this);
                     //dlg.setTitle("Login");
                     dlg.setView(dialogView);
+
                     dlg.setPositiveButton("sign in", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -128,11 +131,11 @@ public class mainmenu extends AppCompatActivity{
 
                             if(ID.isEmpty() || Passwd.isEmpty()) {
                                 Toast.makeText(getApplicationContext(), "ID와 Password를 입력해주세요", Toast.LENGTH_LONG).show();
+
                             }
                             else{
-                                new JSONTask().execute(login_url);
+                                new LoginTask().execute(login_url);
                             }
-
                         }
                     });
 
@@ -143,7 +146,7 @@ public class mainmenu extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(), "이미 로그인되어 있습니다.", Toast.LENGTH_LONG).show();
                 }
                 return true;
-            case R.id.logout:
+            case R.id.logout:       // logout
                 if(login) {
                     login = false;
                     editor.remove("ID");
@@ -155,22 +158,42 @@ public class mainmenu extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(), "로그인되어 있지 않습니다.", Toast.LENGTH_LONG).show();
                 }
                 return true;
-            case R.id.join:
+            case R.id.join:     // join
+                dialogView = (View) View.inflate(mainmenu.this, R.layout.dialog_join, null);
+                AlertDialog.Builder dlg = new AlertDialog.Builder(mainmenu.this);
+                //dlg.setTitle("Login");
+                dlg.setView(dialogView);
+                dlg.setPositiveButton("sign up", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        temp1 = dialogView.findViewById(R.id.ID_text);
+                        joinID = temp1.getText().toString();
+                        temp1 = dialogView.findViewById(R.id.Passwd_text);
+                        joinPW = temp1.getText().toString();
+                        temp1 = dialogView.findViewById(R.id.Passwd_text2);
+                        PW_check = temp1.getText().toString();
 
+                        if(joinID.isEmpty() || joinPW.isEmpty() || PW_check.isEmpty()) {
+                            Toast.makeText(getApplicationContext(), "항목을 모두 입력해주세요", Toast.LENGTH_LONG).show();
+                        }
+                        else if(!joinPW.equals(PW_check)){
+                            Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            new LoginTask().execute(join_url);
+                        }
+                    }
+                });
+
+                dlg.setNegativeButton("cancel", null);
+                dlg.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    /*Button.OnClickListener historyClickListener = new View.OnClickListener() {
-        public void onClick(View v){
-            Intent intent = new Intent(mainmenu.this,MainActivity.class);
-            startActivity(intent);
-        }
-    };*/
-
-    public class JSONTask extends AsyncTask<String, String, String> {
+    public class LoginTask extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... urls) {
@@ -184,7 +207,9 @@ public class mainmenu extends AppCompatActivity{
 
                 try{
                     URL url = new URL(urls[0]);
+
                     con = (HttpURLConnection) url.openConnection();
+                    Log.v("test", "openConnection");
                     con.setRequestMethod("POST");
                     con.setRequestProperty("Cache-Control", "no-cache");
                     con.setRequestProperty("Content-Type", "application/json");
@@ -229,7 +254,6 @@ public class mainmenu extends AppCompatActivity{
                     }
                 }
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
 
@@ -239,19 +263,106 @@ public class mainmenu extends AppCompatActivity{
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-            if(result.equals("로그인 되었습니다.")){
-                login = true;
-                if(checkBox != null) {
-                    if (checkBox.isChecked()) {
-                        Log.v("test", "ID & Passwd save");
-                        editor.putString("ID", ID);
-                        editor.putString("Passwd", Passwd);
-                        editor.commit();
+            Log.v("test", "onPostExcute");
+            if(result == null){
+                Toast.makeText(getApplicationContext(), "서버와 연결에 실패하였습니다.", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                if (result.equals("로그인 되었습니다.")) {
+                    login = true;
+                    if (checkBox != null) {
+                        if (checkBox.isChecked()) {
+                            Log.v("test", "ID & Passwd save");
+                            editor.putString("ID", ID);
+                            editor.putString("Passwd", Passwd);
+                            editor.commit();
+                        }
                     }
                 }
             }
         }
+    }
+
+    public class JoinTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.accumulate("ID", joinID);
+                jsonObject.accumulate("PASSWD", joinPW);
+
+                HttpURLConnection con = null;
+                BufferedReader reader = null;
+
+                try{
+                    URL url = new URL(urls[0]);
+
+                    con = (HttpURLConnection) url.openConnection();
+                    Log.v("test", "openConnection");
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Cache-Control", "no-cache");
+                    con.setRequestProperty("Content-Type", "application/json");
+                    con.setRequestProperty("Accept", "text/html");
+                    con.setDoOutput(true);
+                    con.setDoInput(true);
+                    con.connect();
+
+                    OutputStream outStream = con.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
+                    writer.write(jsonObject.toString());
+                    writer.flush();
+                    writer.close();
+
+                    InputStream stream = con.getInputStream();
+
+                    reader = new BufferedReader(new InputStreamReader(stream));
+
+                    StringBuffer buffer = new StringBuffer();
+
+                    String line = "";
+                    while((line = reader.readLine()) != null){
+                        buffer.append(line);
+                    }
+
+                    return buffer.toString();
+
+                } catch (MalformedURLException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if(con != null){
+                        con.disconnect();
+                    }
+                    try {
+                        if(reader != null){
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.v("test", "onPostExcute");
+            if(result == null){
+                Toast.makeText(getApplicationContext(), "서버와 연결에 실패하였습니다.", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
 }
