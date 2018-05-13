@@ -236,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Heart_rate = 0;
                     HR_list.clear();
                     XYZ_list.clear();
-                    txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
-                                    +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : ");
+                    txtByte.setText("측정 전 정보 : "+prev_step+"걸음수 "+prev_distance+"미터 "+prev_cal+"칼로리\n측정 후 정보 : " +curr_step+"걸음수 "
+                                    +curr_distance+"미터 "+curr_cal+"칼로리\n시간 : "+time+"초\n"+"심박수 : ");
                     //txt_heart.setText("심박수 : ");
                     txtTimer.setText("0");
 
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 else if(running == true){      // 서버전송 종료
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
                     mNotificationManager.cancel(1234);
-                    btnServer.setText("Start");
+                    btnServer.setText("측정 시작");
                     getInformation();
 
                     // unbindService(connection);
@@ -297,8 +297,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void sendServer() {
-        txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
-                +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : "+HR_list.toString());
+        txtByte.setText("측정 전 정보 : "+prev_step+"걸음수 "+prev_distance+"미터 "+prev_cal+"칼로리\n측정 후 정보 : " +curr_step+"걸음수 "
+                +curr_distance+"미터 "+curr_cal+"칼로리\n시간 : "+time+"s\n"+"심박수 : "+HR_list.toString());
     }
     void getInformation() { // 걸음수, 거리, 칼로리 정보
         BluetoothGattCharacteristic bchar = bluetoothGatt.getService(CustomBluetoothProfile.Information.service)
@@ -411,6 +411,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         protected void onProgressUpdate(String... params) {
             txtTimer.setText(time + "");
+            if(Heart_rate>100)txt_heart.setTextColor(getResources().getColor(R.color.Red));
+            else txt_heart.setTextColor(getResources().getColor(R.color.Dark));
             txt_heart.setText(""+ Heart_rate);
             if(time!=0 && time%5==0) {
                 HR_list.add(Heart_rate);
