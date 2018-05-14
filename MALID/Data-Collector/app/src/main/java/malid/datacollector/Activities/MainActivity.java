@@ -283,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
                     mNotificationManager.cancel(1234);
                     btnServer.setText("측정 시작");
+                    serverView.setText("현재 서버가 데이터를 수신하지 않고 있습니다.");
                     getInformation();
 
                     // unbindService(connection);
@@ -375,6 +376,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             }
 
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
+                            serverView.setTextColor(getResources().getColor(R.color.green));
                             serverView.invalidate();
                             serverView.requestLayout();
                             servscroll.invalidate();
