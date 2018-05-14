@@ -20,10 +20,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,13 +49,22 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import malid.datacollector.CounterService;
 import malid.datacollector.Helpers.CustomBluetoothProfile;
+import malid.datacollector.Helpers.historyitem;
+import malid.datacollector.Helpers.historyitemadapter;
 import malid.datacollector.R;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
+
+
+    private RecyclerView lecyclerView;
+    List<historyitem> albumList;
+    historyitemadapter realadapter;
+    LinearLayoutManager realmanager;
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothGatt bluetoothGatt;
@@ -143,6 +156,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sm2=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         s = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION); // 방향센서
         s2=sm2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+
+        albumList=new ArrayList<historyitem>();
+        initLayout();
+    }
+
+    private void initLayout(){
+
+        lecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
+        lecyclerView.setLayoutManager(realmanager=new LinearLayoutManager(getApplicationContext()));
+        lecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+    private void setData(String time, String hr, String exercise){
+
+            historyitem album = new historyitem();
+            album.setTitle(time);
+            album.setArtist(hr);
+            album.setImage(exercise);
+            albumList.add(album);
+            realadapter.notifyDataSetChanged();
+            lecyclerView.refreshDrawableState();
+            //realmanager.setStackFromEnd(true);
+
     }
 
     String getBoundedDevice() {   // MI Band 2 MAC address 자동등록
@@ -268,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
                    mNotificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     mNotificationManager.notify(1234,mBuilder.build());
+                    albumList.clear();
+                    realadapter.notifyDataSetChanged();
                     btnServer.setText("Stop");
                     getInformation();
 
@@ -283,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
                     mNotificationManager.cancel(1234);
                     btnServer.setText("측정 시작");
+                    serverView.setTextColor(getResources().getColor(R.color.Red));
                     serverView.setText("현재 서버가 데이터를 수신하지 않고 있습니다.");
                     getInformation();
 
@@ -335,6 +375,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(time!=0 && time%5==0){
                     if(XYZ_list.size() < 150)continue;
                     Log.d("sensor", XYZ_list.toString());
+                    setData(String.valueOf(time),String.valueOf(Heart_rate),"정지");
                     try {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("ID", ID);
@@ -375,8 +416,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buffer.append("\n");
                             }
 
-                            serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             serverView.setTextColor(getResources().getColor(R.color.green));
+                            serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
+
                             serverView.invalidate();
                             serverView.requestLayout();
                             servscroll.invalidate();

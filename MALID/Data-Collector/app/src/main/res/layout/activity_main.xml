@@ -150,7 +150,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.4"
                         android:background="@drawable/buttonbg"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
@@ -158,7 +158,7 @@
                         android:paddingRight="10dp"
                         android:layout_gravity="top"
                         android:gravity="center"
-                        android:text = "운동 종류"/>
+                        android:text = "측정시간"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.2"
                         android:background="@drawable/buttonbg"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
@@ -182,14 +182,25 @@
                         android:paddingRight="10dp"
                         android:layout_gravity="top"
                         android:gravity="center"
-                        android:text = "측정시간"/>
+                        android:text = "운동 종류"/>
+
                 </LinearLayout>
+
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </android.support.v7.widget.RecyclerView>
+
                 <ScrollView
                     android:layout_weight="1"
                     android:id="@+id/DBhistory"
                     android:layout_width="match_parent"
                     android:layout_height="100dp">
                 </ScrollView>
+
             </LinearLayout>
 
 
