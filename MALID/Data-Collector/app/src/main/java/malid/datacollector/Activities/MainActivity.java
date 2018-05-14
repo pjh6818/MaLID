@@ -24,6 +24,9 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,14 +48,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import malid.datacollector.CounterService;
 import malid.datacollector.Helpers.CustomBluetoothProfile;
+import malid.datacollector.Helpers.historyitem;
+import malid.datacollector.Helpers.historyitemadapter;
+
 import malid.datacollector.R;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
+    private RecyclerView lecyclerView;
     BluetoothAdapter bluetoothAdapter;
     BluetoothGatt bluetoothGatt;
     BluetoothDevice bluetoothDevice;
@@ -143,6 +151,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sm2=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         s = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION); // 방향센서
         s2=sm2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        initLayout();
+        initData();
+    }
+
+    private void initLayout(){
+
+        lecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+    }
+    private void initData(){
+
+        List<historyitem> albumList = new ArrayList<historyitem>();
+
+        for (int i =0; i<20; i ++){
+
+            historyitem album = new historyitem();
+            album.setTitle("20180514");
+            album.setArtist("123");
+            album.setImage(R.drawable.walk);
+            albumList.add(album);
+        }
+
+        lecyclerView.setAdapter(new historyitemadapter(albumList,R.layout.historyitem));
+        lecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        lecyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     String getBoundedDevice() {   // MI Band 2 MAC address 자동등록
@@ -283,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
                     mNotificationManager.cancel(1234);
                     btnServer.setText("측정 시작");
+                    serverView.setTextColor(getResources().getColor(R.color.Red));
                     serverView.setText("현재 서버가 데이터를 수신하지 않고 있습니다.");
                     getInformation();
 
@@ -375,8 +410,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buffer.append("\n");
                             }
 
-                            serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
                             serverView.setTextColor(getResources().getColor(R.color.green));
+                            serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
+
                             serverView.invalidate();
                             serverView.requestLayout();
                             servscroll.invalidate();

@@ -84,6 +84,10 @@ public class mainmenu extends AppCompatActivity{
                 else {
                     Toast.makeText(getApplicationContext(), "제작 : MALID", Toast.LENGTH_LONG).show();
                     //토스트로 개발자의 이름을 출력한다.
+
+                    Intent intent = new Intent(getApplicationContext(), HistoryActivity.class); //인텐트에 mainactivity를 실행할 의도를 담아서
+                    intent.putExtra("ID",ID);
+                    startActivity(intent); //액티비티를 실행한다.
                 }
             }
         });
