@@ -56,7 +56,8 @@ public class historyitemadapter extends RecyclerView.Adapter<historyitemadapter.
 
         historyitem item = albumList.get(position);
         viewHolder.textTitle.setText(item.getTitle());
-        viewHolder.img.setBackgroundResource(item.getImage());
+        viewHolder.img.setText(item.getImage());
+        viewHolder.artist.setText(item.getArtist());
         viewHolder.itemView.setTag(item);
 
     }
@@ -71,14 +72,16 @@ public class historyitemadapter extends RecyclerView.Adapter<historyitemadapter.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView img;
+        public TextView img;
         public TextView textTitle;
+        public TextView artist;
 
         public ViewHolder(View itemView){
             super(itemView);
 
-            img = (ImageView) itemView.findViewById(R.id.img);
+            img = (TextView) itemView.findViewById(R.id.img);
             textTitle = (TextView) itemView.findViewById(R.id.textTitle);
+            artist = (TextView) itemView.findViewById(R.id.textArtist);
         }
 
     }

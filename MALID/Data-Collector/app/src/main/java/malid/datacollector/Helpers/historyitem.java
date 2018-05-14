@@ -4,7 +4,7 @@ public class historyitem {
 
     private String title;
     private String artist;
-    private int image;
+    private String image;
 
     public String getTitle() {
         return title;
@@ -22,11 +22,11 @@ public class historyitem {
         this.artist = artist;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

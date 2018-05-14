@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             historyitem album = new historyitem();
             album.setTitle("20180514");
             album.setArtist("123");
-            album.setImage(R.drawable.walk);
+            album.setImage("걷기");
             albumList.add(album);
         }
 

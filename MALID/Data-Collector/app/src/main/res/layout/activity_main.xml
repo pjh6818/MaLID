@@ -172,7 +172,7 @@
                         android:gravity="center"
                         android:text = "심박수"/>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="15dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.2"
                         android:background="@drawable/buttonbg"

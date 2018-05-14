@@ -16,6 +16,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
+                android:text="test"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 android:layout_weight="0.4"/>
 
@@ -24,13 +27,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textSize="15dp"
+                android:text="test"
+                android:gravity="center"
                 android:textStyle="bold"
                 android:layout_weight="0.2"/>
 
-        <ImageView
+        <TextView
             android:id="@+id/img"
-            android:layout_width="40dp"
+            android:layout_width="10dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="걷기"
             android:layout_weight="0.2"/>
 
 
