@@ -25,6 +25,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -170,6 +171,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
         realmanager = new LinearLayoutManager(this);
         lecyclerView.setLayoutManager(realmanager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(lecyclerView.getContext(),
+                realmanager.getOrientation());
+        lecyclerView.addItemDecoration(dividerItemDecoration);
         lecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
     private void setData(String time, String hr, String exercise){
