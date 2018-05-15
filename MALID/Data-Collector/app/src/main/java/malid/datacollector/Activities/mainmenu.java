@@ -48,6 +48,7 @@ public class mainmenu extends AppCompatActivity{
     SharedPreferences.Editor editor;
     String login_url = "http://13.125.101.194:3000/login";
     String join_url = "http://13.125.101.194:3000/join";
+    String graph_url = "http://13.125.101.194:3000/graph";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,9 @@ public class mainmenu extends AppCompatActivity{
                 else {
                     Toast.makeText(getApplicationContext(), "제작 : MALID", Toast.LENGTH_LONG).show();
                     //토스트로 개발자의 이름을 출력한다.
+                    Intent intent = new Intent(getApplicationContext(), Graph.class); //인텐트에 mainactivity를 실행할 의도를 담아서
+                    intent.putExtra("ID",ID);
+                    startActivity(intent); //액티비티를 실행한다.
                 }
             }
         });
