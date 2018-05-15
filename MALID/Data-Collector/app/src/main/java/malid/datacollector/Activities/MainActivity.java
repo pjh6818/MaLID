@@ -808,8 +808,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         JSONObject jobject = jarray.getJSONObject(i);
                         String Class_name = "";
                         if(jobject.optString("class").equals("0")) Class_name = "정지";
-                        else if(jobject.optString("class").equals("0")) Class_name = "걷기";
-                        else if(jobject.optString("class").equals("0")) Class_name = "달리기";
+                        else if(jobject.optString("class").equals("1")) Class_name = "걷기";
+                        else if(jobject.optString("class").equals("2")) Class_name = "달리기";
                         setData(jobject.optString("time"),jobject.optString("HR"),Class_name);
                     }
                 } catch (JSONException e){
