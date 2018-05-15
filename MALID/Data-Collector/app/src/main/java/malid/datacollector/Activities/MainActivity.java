@@ -26,6 +26,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     List<historyitem> albumList;
     historyitemadapter realadapter;
     LinearLayoutManager realmanager;
+    int insertindex=-1;
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothGatt bluetoothGatt;
@@ -166,8 +168,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         lecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
-        lecyclerView.setLayoutManager(realmanager=new LinearLayoutManager(getApplicationContext()));
-        lecyclerView.setItemAnimator(new DefaultItemAnimator());
+        realmanager = new LinearLayoutManager(this);
+        lecyclerView.setLayoutManager(realmanager);
+        //lecyclerView.setItemAnimator(new DefaultItemAnimator());
+        /*DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(lecyclerView.getContext(),
+                realmanager.getOrientation());
+        lecyclerView.addItemDecoration(dividerItemDecoration);*/
     }
     private void setData(String time, String hr, String exercise){
 
@@ -175,10 +181,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             album.setTitle(time);
             album.setArtist(hr);
             album.setImage(exercise);
-            albumList.add(album);
-            realadapter.notifyDataSetChanged();
-            lecyclerView.refreshDrawableState();
-            //realmanager.setStackFromEnd(true);
+            insertindex++;
+            albumList.add(insertindex,album);
+            realadapter.notifyItemInserted(insertindex);
+            //lecyclerView.scrollToPosition(albumList.size() -1);
 
     }
 
@@ -306,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                    mNotificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     mNotificationManager.notify(1234,mBuilder.build());
                     albumList.clear();
+                    insertindex=-1;
                     realadapter.notifyDataSetChanged();
                     btnServer.setText("Stop");
                     getInformation();
