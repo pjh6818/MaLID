@@ -170,10 +170,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
         realmanager = new LinearLayoutManager(this);
         lecyclerView.setLayoutManager(realmanager);
-        //lecyclerView.setItemAnimator(new DefaultItemAnimator());
-        /*DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(lecyclerView.getContext(),
-                realmanager.getOrientation());
-        lecyclerView.addItemDecoration(dividerItemDecoration);*/
+        lecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
     private void setData(String time, String hr, String exercise){
 
@@ -183,7 +180,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             album.setImage(exercise);
             insertindex++;
             albumList.add(insertindex,album);
+            /*new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                }
+            },1000);*/
             realadapter.notifyItemInserted(insertindex);
+            //lecyclerView.invalidate();
+            //lecyclerView.requestLayout();
             //lecyclerView.scrollToPosition(albumList.size() -1);
 
     }
