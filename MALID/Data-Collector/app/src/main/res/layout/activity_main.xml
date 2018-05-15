@@ -186,12 +186,32 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/progrssbarlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="현재 서버에서 데이터를 처리 중입니다. \n 측정을 완료 한 후 터치해주세요"/>
+
+                </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
                     </android.support.v7.widget.RecyclerView>
 
                 <ScrollView

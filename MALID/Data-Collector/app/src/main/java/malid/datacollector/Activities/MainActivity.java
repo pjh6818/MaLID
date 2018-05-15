@@ -31,6 +31,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -322,6 +324,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     albumList.clear();
                     insertindex=-1;
                     realadapter.notifyDataSetChanged();
+                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
+                    viewviewview.setVisibility(viewviewview.GONE);
+                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
+                    viewview.setVisibility(viewview.VISIBLE);
                     btnServer.setText("Stop");
                     getInformation();
 
@@ -335,6 +341,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 else if(running == true){      // 서버전송 종료
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
+                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
+                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
+                    viewview.setVisibility(viewview.GONE);
+                    viewviewview.setVisibility(viewviewview.VISIBLE);
                     mNotificationManager.cancel(1234);
                     btnServer.setText("측정 시작");
                     serverView.setTextColor(getResources().getColor(R.color.Red));

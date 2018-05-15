@@ -21,7 +21,13 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_weight="0.4"/>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="♥"
+            android:textColor="@color/Red"
+            android:layout_marginLeft="50dp"/>
         <TextView
             android:id="@+id/textArtist"
             android:layout_width="50dp"
@@ -29,7 +35,6 @@
             android:layout_gravity="center"
             android:textSize="15dp"
             android:text="test"
-            android:gravity="center"
             android:textStyle="bold"
             android:layout_weight="0.2"/>
 
