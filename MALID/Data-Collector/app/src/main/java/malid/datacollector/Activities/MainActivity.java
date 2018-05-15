@@ -20,10 +20,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,8 +37,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -340,9 +340,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     // unbindService(connection);
                     running = false;
                     thread.interrupt();
-
-                    btnServer.setEnabled(false);    // 버튼 비활성화
-                    new MainTask().execute("http://13.125.101.194:3000/main");
                 }
                 else
                     Toast.makeText(getApplicationContext(),"알 수 없는 오류 발생", Toast.LENGTH_SHORT).show();
@@ -721,106 +718,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         }
     }
-
-    public class MainTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("ID", ID);
-                jsonObject.accumulate("count", time/5);
-
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
-
-                if(running == false && time > 5){
-                    Thread.sleep(3000); // 3초 대기
-                }
-                try{
-                    URL url = new URL(urls[0]);
-
-                    con = (HttpURLConnection) url.openConnection();
-                    Log.v("test", "openConnection");
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Cache-Control", "no-cache");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    con.setRequestProperty("Accept", "text/html");
-                    con.setDoOutput(true);
-                    con.setDoInput(true);
-                    con.connect();
-
-                    OutputStream outStream = con.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                    writer.write(jsonObject.toString());
-                    writer.flush();
-                    writer.close();
-
-                    InputStream stream = con.getInputStream();
-
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    StringBuffer buffer = new StringBuffer();
-
-                    String line = "";
-                    while((line = reader.readLine()) != null){
-                        buffer.append(line);
-                    }
-
-                    return buffer.toString();
-
-                } catch (MalformedURLException e){
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if(con != null){
-                        con.disconnect();
-                    }
-                    try {
-                        if(reader != null){
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.v("test", "onPostExcute");
-            if(running == false) btnServer.setEnabled(true);
-            if(result == null){
-                Toast.makeText(getApplicationContext(), "서버와 연결에 실패하였습니다.", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Log.v("test", "DB result : "+result);
-                try {
-                    JSONArray jarray = new JSONArray(result);
-                    for(int i=jarray.length()-1; i>=0; i--){
-                        JSONObject jobject = jarray.getJSONObject(i);
-                        String Class_name = "";
-                        if(jobject.optString("class").equals("0")) Class_name = "정지";
-                        else if(jobject.optString("class").equals("0")) Class_name = "걷기";
-                        else if(jobject.optString("class").equals("0")) Class_name = "달리기";
-                        setData(jobject.optString("time"),jobject.optString("HR"),Class_name);
-                    }
-                } catch (JSONException e){
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-    }
-
 }
 
 
