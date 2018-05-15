@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     private RecyclerView lecyclerView;
-    List<historyitem> albumList;
-    historyitemadapter realadapter;
-    LinearLayoutManager realmanager;
-    int insertindex=-1;
+    public List<historyitem> albumList;
+    public historyitemadapter realadapter;
+    public LinearLayoutManager realmanager;
+    public int insertindex=0;
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothGatt bluetoothGatt;
@@ -161,18 +161,27 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         albumList=new ArrayList<historyitem>();
+        historyitem album = new historyitem();
+        album.setTitle("");
+        album.setArtist("아래에     기록들이    표시됩니다.");
+        album.setImage("");
+        albumList.add(insertindex,album);
         initLayout();
     }
 
-    private void initLayout(){
+    public void initLayout(){
 
         lecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
         realmanager = new LinearLayoutManager(this);
         lecyclerView.setLayoutManager(realmanager);
-        lecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //lecyclerView.setItemAnimator(new DefaultItemAnimator());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(lecyclerView.getContext(),
+                realmanager.getOrientation());
+        lecyclerView.addItemDecoration(dividerItemDecoration);
+        realadapter=new historyitemadapter(albumList,R.layout.historyitem);
+        lecyclerView.setAdapter(realadapter);
     }
-    private void setData(String time, String hr, String exercise){
+    public void setData(String time, String hr, String exercise){
 
             historyitem album = new historyitem();
             album.setTitle(time);
@@ -315,9 +324,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
                    mNotificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     mNotificationManager.notify(1234,mBuilder.build());
-                    albumList.clear();
-                    insertindex=-1;
-                    realadapter.notifyDataSetChanged();
+                    insertindex=0;
+                    //realadapter.notifyDataSetChanged();
                     btnServer.setText("Stop");
                     getInformation();
 
@@ -335,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     btnServer.setText("측정 시작");
                     serverView.setTextColor(getResources().getColor(R.color.Red));
                     serverView.setText("현재 서버가 데이터를 수신하지 않고 있습니다.");
+                    albumList.clear();
                     getInformation();
 
                     // unbindService(connection);
