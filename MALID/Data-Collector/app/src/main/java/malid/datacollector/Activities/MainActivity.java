@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(time!=0 && time%5==0){
                     if(XYZ_list.size() < 150)continue;
                     Log.d("sensor", XYZ_list.toString());
-                    setData(String.valueOf(time),String.valueOf(Heart_rate),"정지");
+                    // setData(String.valueOf(time),String.valueOf(Heart_rate),"정지");
                     try {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.accumulate("ID", ID);
