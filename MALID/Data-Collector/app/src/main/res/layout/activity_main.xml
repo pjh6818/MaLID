@@ -139,7 +139,7 @@
 
             <Button
                 android:id="@+id/btnServer"
-                android:background="@drawable/buttonstate"
+                android:background="@drawable/buttonbg"
                 android:textColor="@color/Red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -236,7 +236,8 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="5dp">
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone">
                     </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
