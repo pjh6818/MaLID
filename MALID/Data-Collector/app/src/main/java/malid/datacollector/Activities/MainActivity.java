@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
         newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        this.getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+        //this.getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
 
         initializeObjects();
         initilaizeComponents();
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 public void run() {
                 }
             },1000);*/
-            realadapter.notifyItemInserted(insertindex);
+            //realadapter.notifyItemInserted(insertindex);
             //lecyclerView.invalidate();
             //lecyclerView.requestLayout();
             //lecyclerView.scrollToPosition(albumList.size() -1);
@@ -825,6 +825,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
                     RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
+                    realadapter.notifyDataSetChanged();
+                    viewviewview.invalidate();
+                    viewviewview.postInvalidate();
+                    viewviewview.requestLayout();
+                    viewviewview.refreshDrawableState();
                     viewview.setVisibility(viewview.GONE);
                     viewviewview.setVisibility(viewviewview.VISIBLE);
                 } catch (JSONException e){
