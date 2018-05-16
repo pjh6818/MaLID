@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public  NotificationManager mNotificationManager;
     // ////////////////////////////////////
     Intent intent;
-    int time=0;
+    int time=0, count=0;
     int prev_step=0, prev_distance=0, prev_cal=0;
     int curr_step=0, curr_distance=0, curr_cal=0;
     int Heart_rate=0, Label=-1;
@@ -384,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             super.onPreExecute();
             txtTimer = (TextView) findViewById(R.id.txtTimer);
             time = 0;
+            count = 0;
 
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);   // get PowerManager
             wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "wakelock");  // cpu 깨어있도록 설정
@@ -425,6 +425,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             con.setDoOutput(true);
                             con.setDoInput(true);
                             con.connect();
+                            count++;
 
                             OutputStream outStream = con.getOutputStream();
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
@@ -743,7 +744,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             try {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.accumulate("ID", ID);
-                jsonObject.accumulate("count", time/5);
+                jsonObject.accumulate("count", count);
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
