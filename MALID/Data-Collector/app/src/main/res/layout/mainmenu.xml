@@ -37,7 +37,7 @@
                 android:layout_gravity="center">
                 <Button
                     android:id="@+id/historygo"
-                    android:background="@drawable/buttonbg"
+                    android:background="@drawable/buttonstate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="2px"
@@ -46,7 +46,7 @@
 
                 <Button
                     android:id="@+id/recordgo"
-                    android:background="@drawable/buttonbg"
+                    android:background="@drawable/buttonstate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
