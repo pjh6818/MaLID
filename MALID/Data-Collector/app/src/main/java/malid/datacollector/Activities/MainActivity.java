@@ -340,10 +340,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 else if(running == true){      // 서버전송 종료
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
-                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
-                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
-                    viewview.setVisibility(viewview.GONE);
-                    viewviewview.setVisibility(viewviewview.VISIBLE);
                     mNotificationManager.cancel(1234);
                     btnServer.setText("측정 시작");
                     serverView.setTextColor(getResources().getColor(R.color.Red));
@@ -827,6 +823,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         else if(jobject.optString("class").equals("2")) Class_name = "달리기";
                         setData(jobject.optString("time"),jobject.optString("HR"),Class_name);
                     }
+                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
+                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
+                    viewview.setVisibility(viewview.GONE);
+                    viewviewview.setVisibility(viewviewview.VISIBLE);
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
