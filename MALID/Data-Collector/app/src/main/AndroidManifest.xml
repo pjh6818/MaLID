@@ -17,6 +17,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.MainActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.catrgory.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity android:name = ".Activities.mainmenu">

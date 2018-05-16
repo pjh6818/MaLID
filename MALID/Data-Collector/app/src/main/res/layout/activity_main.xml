@@ -7,6 +7,7 @@
     tools:context="malid.datacollector.Activities.MainActivity">
 
     <LinearLayout
+        android:id="@+id/mainlinearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -213,13 +214,6 @@
                         android:layout_height="match_parent"
                         android:visibility="gone">
                     </android.support.v7.widget.RecyclerView>
-
-                <ScrollView
-                    android:layout_weight="1"
-                    android:id="@+id/DBhistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp">
-                </ScrollView>
 
             </LinearLayout>
 
