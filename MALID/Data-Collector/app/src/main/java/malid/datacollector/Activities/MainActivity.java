@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 realmanager.getOrientation());
         lecyclerView.addItemDecoration(dividerItemDecoration);
         lecyclerView.setItemAnimator(new DefaultItemAnimator());
+        realadapter.notifyDataSetChanged();
     }
     private void setData(String time, String hr, String exercise){
 
