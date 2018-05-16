@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 realmanager.getOrientation());
         lecyclerView.addItemDecoration(dividerItemDecoration);
         lecyclerView.setItemAnimator(new DefaultItemAnimator());
+        realadapter.notifyDataSetChanged();
     }
     private void setData(String time, String hr, String exercise){
 
@@ -825,13 +826,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
                     RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
-                    realadapter.notifyDataSetChanged();
-                    viewviewview.invalidate();
-                    viewviewview.postInvalidate();
-                    viewviewview.requestLayout();
-                    viewviewview.refreshDrawableState();
                     viewview.setVisibility(viewview.GONE);
                     viewviewview.setVisibility(viewviewview.VISIBLE);
+                    realadapter.notifyDataSetChanged();
+                    viewviewview.postInvalidate();
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
