@@ -10,8 +10,12 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -42,8 +46,10 @@ public class HistoryActivity extends AppCompatActivity {
     TabHost tabHost1;
     TabHost.TabSpec ts1, ts2, ts3;
     ArrayList<String> class_name;
-    ArrayList<Integer> count;
+    ArrayList<Integer> count, hr;
+
     PieChart pieChart;
+    LineChart hrChart;
     int sum;
 
     @Override
@@ -76,7 +82,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     void make_Chart(){
         pieChart = (PieChart)findViewById(R.id.piechart);
-
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(true);
         pieChart.setExtraOffsets(5,10,5,5);
@@ -93,19 +98,31 @@ public class HistoryActivity extends AppCompatActivity {
         description.setText("운동 비율"); //라벨
         description.setTextSize(15);
         pieChart.setDescription(description);
-
-       pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
-
+        pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
         PieDataSet dataSet = new PieDataSet(Values,"운동");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
+        PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.WHITE);
-
         pieChart.setData(data);
+
+        hrChart = (LineChart)findViewById(R.id.hrchart);
+
+        ArrayList<Entry> entries = new ArrayList<>();
+        for(int i = 0;i<hr.size();i++) {
+            entries.add(new Entry(i, hr.get(i)));
+        }
+
+        LineDataSet dataset = new LineDataSet(entries, "심박수");
+        LineData hrdata = new LineData(dataset);
+        dataset.setDrawCircles(false);
+        dataset.setColor(Color.RED);
+
+        hrChart.setData(hrdata);
+        hrChart.animateY(5000);
+
     }
 
     public class historyTask extends AsyncTask<String, String, String> {
@@ -174,13 +191,27 @@ public class HistoryActivity extends AppCompatActivity {
                     JSONArray jarray = new JSONArray(result);
                     for(int i=jarray.length()-1; i>=0; i--){
                         JSONObject json_Object = jarray.getJSONObject(i);
-                        Log.v("jsontest", json_Object.optString("class"));
                         if(json_Object.optString("class").equals("0"))class_name.add("정지");
                         else if(json_Object.optString("class").equals("1"))class_name.add("걷기");
                         else if(json_Object.optString("class").equals("2"))class_name.add("달리기");
                         else if(json_Object.optString("class").equals("3"))class_name.add("아령");
                         count.add(json_Object.optInt("count"));
                         sum += json_Object.optInt("count");
+                    }
+                    result = result.substring(result.indexOf("]")+1);
+                    jarray = new JSONArray(result);
+                    JSONObject jsonObject = jarray.getJSONObject(0);
+                    String str = jsonObject.optString("HR");
+                    hr = new ArrayList();
+                    String temp;
+                    int t;
+                    while(str.contains(",")) {
+                        temp = str.substring(0, str.indexOf(", "));
+                        str = str.substring(str.indexOf(", ")+2);
+                        Log.v("temp", Integer.toString(temp.length()));
+                        Log.v("str", str);
+                        t=Integer.parseInt(temp);
+                        hr.add(t);
                     }
                 } catch (JSONException e){
                     e.printStackTrace();

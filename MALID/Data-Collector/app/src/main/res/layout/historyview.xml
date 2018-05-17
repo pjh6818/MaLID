@@ -52,14 +52,23 @@
                 </LinearLayout>
                 <LinearLayout android:id="@+id/all"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:orientation="vertical">
+                    android:layout_height="500dp"
+                    android:orientation="vertical"
+                    android:weightSum="100">
                     <com.github.mikephil.charting.charts.PieChart
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/piechart">
+                        android:id="@+id/piechart"
+                        android:layout_weight="50">
 
                     </com.github.mikephil.charting.charts.PieChart>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/hrchart"
+                        android:layout_weight="50">
+
+                    </com.github.mikephil.charting.charts.LineChart>
                 </LinearLayout>
             </android.support.v7.widget.ContentFrameLayout>
 
