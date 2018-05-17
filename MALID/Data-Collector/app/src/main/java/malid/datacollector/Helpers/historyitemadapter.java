@@ -55,9 +55,10 @@ public class historyitemadapter extends RecyclerView.Adapter<historyitemadapter.
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
         historyitem item = albumList.get(position);
-        viewHolder.textTitle.setText(item.getTitle());
-        viewHolder.img.setText(item.getImage());
-        viewHolder.artist.setText(item.getArtist());
+        viewHolder.idx.setText(item.getidx());
+        viewHolder.ttime.setText(item.gettime());
+        viewHolder.heartrate.setText(item.getheartrate());
+        viewHolder.classs.setText(item.getClasss());
         viewHolder.itemView.setTag(item);
 
     }
@@ -72,16 +73,18 @@ public class historyitemadapter extends RecyclerView.Adapter<historyitemadapter.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView img;
-        public TextView textTitle;
-        public TextView artist;
+        public TextView idx;
+        public TextView ttime;
+        public TextView heartrate;
+        public TextView classs;
 
         public ViewHolder(View itemView){
             super(itemView);
 
-            img = (TextView) itemView.findViewById(R.id.img);
-            textTitle = (TextView) itemView.findViewById(R.id.textTitle);
-            artist = (TextView) itemView.findViewById(R.id.textArtist);
+            idx = (TextView) itemView.findViewById(R.id.itemidx);
+            ttime = (TextView) itemView.findViewById(R.id.itemtime);
+            heartrate = (TextView) itemView.findViewById(R.id.itemheart);
+            classs = (TextView) itemView.findViewById(R.id.itemclass);
         }
 
     }

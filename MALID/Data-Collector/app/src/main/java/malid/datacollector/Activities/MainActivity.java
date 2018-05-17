@@ -178,12 +178,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         lecyclerView.setItemAnimator(new DefaultItemAnimator());
         realadapter.notifyDataSetChanged();
     }
-    private void setData(String time, String hr, String exercise){
+    private void setData(String idx,String time, String hr, String exercise){
 
             historyitem album = new historyitem();
-            album.setTitle(time);
-            album.setArtist(hr);
-            album.setImage(exercise);
+            album.setidx(idx);
+            album.setTime(time);
+            album.setHeartrate(hr);
+            album.setClasss(exercise);
             insertindex++;
             albumList.add(insertindex,album);
             /*new Handler().postDelayed(new Runnable() {
@@ -822,7 +823,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         if(jobject.optString("class").equals("0")) Class_name = "정지";
                         else if(jobject.optString("class").equals("1")) Class_name = "걷기";
                         else if(jobject.optString("class").equals("2")) Class_name = "달리기";
-                        setData(jobject.optString("time"),jobject.optString("HR"),Class_name);
+                        setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
                     }
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
                     RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);

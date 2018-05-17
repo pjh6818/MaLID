@@ -2,31 +2,36 @@ package malid.datacollector.Helpers;
 
 public class historyitem {
 
-    private String title;
-    private String artist;
-    private String image;
+    private String idx;
+    private String time;
+    private String heartrate;
+    private String classs;
 
-    public String getTitle() {
-        return title;
+    public String getidx() {
+        return idx;
+    }
+    public void setidx(String idx) {
+        this.idx=idx;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String gettime() {
+        return time;
+    }
+    public void setTime(String time) { this.time = time; }
+
+    public String getheartrate() {
+        return heartrate;
     }
 
-    public String getArtist() {
-        return artist;
+    public void setHeartrate(String heartrate) {
+        this.heartrate = heartrate;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
+    public String getClasss() {
+        return classs;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public void setClasss(String classs) {
+        this.classs = classs;
     }
 }
