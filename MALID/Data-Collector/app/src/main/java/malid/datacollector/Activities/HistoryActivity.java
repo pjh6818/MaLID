@@ -66,6 +66,10 @@ public class HistoryActivity extends AppCompatActivity {
     void init_Tap(){
         tabHost1 = (TabHost)findViewById(R.id.tabHost1);
         tabHost1.setup();
+        ts3 = tabHost1.newTabSpec("all") ;
+        ts3.setContent(R.id.all) ;
+        ts3.setIndicator("전체") ;
+        tabHost1.addTab(ts3) ;
         ts1 = tabHost1.newTabSpec("daily") ;
         ts1.setContent(R.id.daily) ;
         ts1.setIndicator("일일") ;
@@ -74,10 +78,7 @@ public class HistoryActivity extends AppCompatActivity {
         ts2.setContent(R.id.weekly) ;
         ts2.setIndicator("주간") ;
         tabHost1.addTab(ts2) ;
-        ts3 = tabHost1.newTabSpec("all") ;
-        ts3.setContent(R.id.all) ;
-        ts3.setIndicator("전체") ;
-        tabHost1.addTab(ts3) ;
+
     }
 
     void make_Chart(){

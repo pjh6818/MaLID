@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initLayout();
     }
 
-    private void initLayout(){
+    public void initLayout(){
 
         lecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));

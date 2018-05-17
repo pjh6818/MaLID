@@ -146,100 +146,100 @@
                 android:text="측정 시작" />
 
         </LinearLayout>
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/buttonbg"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttonbg"
-                android:orientation="vertical">
-
+                android:background="@drawable/buttonbgblack"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                android:text = "HISTORY"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/buttonbgblack"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/buttonbgnocorner"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:layout_gravity="top"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/White"
-                    android:text = "HISTORY"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:background="@drawable/buttonbgnocorner"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text = "측정시간"/>
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
-                        android:background="@drawable/buttonbgnocorner"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text = "심박수"/>
-                    <TextView
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
-                        android:background="@drawable/buttonbgnocorner"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text = "운동 종류"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/progrssbarlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:text = "측정시간"/>
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/buttonbgnocorner"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_gravity="top"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="현재 서버에서 데이터를 처리 중입니다. \n 측정을 완료 한 후 터치해주세요"/>
-
-                </LinearLayout>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="5dp">
-                    </android.support.v7.widget.RecyclerView>
+                    android:text = "심박수"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/buttonbgnocorner"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_gravity="top"
+                    android:gravity="center"
+                    android:text = "운동 종류"/>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/progrssbarlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="현재 서버에서 데이터를 처리 중입니다. \n 측정을 완료 한 후 터치해주세요"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp">
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
 
 
 
@@ -248,7 +248,7 @@
             android:id="@+id/linearLayout"
             android:background="@drawable/buttonbg"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="150dp"
             android:orientation="vertical"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
@@ -265,48 +265,48 @@
                 android:gravity="center"
                 android:padding="10dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_gravity="right"
-            android:padding="3dp">
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:id="@+id/serverscroll">
-                <LinearLayout
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="right"
+                android:padding="3dp">
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:id="@+id/serverscroll">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text = "서버 메시지 : "/>
+                            <TextView
+                                android:id="@+id/serverView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/Red"
+                                android:text="현재 서버가 데이터를 수신하지 않고 있습니다."/>
+                        </LinearLayout>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text = "서버 메시지 : "/>
-                        <TextView
-                            android:id="@+id/serverView"
+                            android:id="@+id/txtByte"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/Red"
-                            android:text="현재 서버가 데이터를 수신하지 않고 있습니다."/>
+                            android:text="측정 전 정보 : \n측정 후 정보 : \n시간 : \n심박수 : "/>
+
+
                     </LinearLayout>
-                    <TextView
-                        android:id="@+id/txtByte"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="측정 전 정보 : \n측정 후 정보 : \n시간 : \n심박수 : "/>
 
-
-                </LinearLayout>
-
-            </ScrollView>
-        </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
 
 
 
