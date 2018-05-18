@@ -166,8 +166,8 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
-    void make_Chart(){
-        pieChart = (PieChart)findViewById(R.id.piechart);
+    void make_Chart(PieChart View, LineChart View2){
+        pieChart = View;
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(true);
         pieChart.setExtraOffsets(5,10,5,5);
@@ -194,7 +194,7 @@ public class HistoryActivity extends AppCompatActivity {
         data.setValueTextColor(Color.WHITE);
         pieChart.setData(data);
 
-        hrChart = (LineChart)findViewById(R.id.hrchart);
+        hrChart = View2;
 
         ArrayList<Entry> entries = new ArrayList<>();
         for(int i = 0;i<hr.size();i++) {
@@ -302,7 +302,8 @@ public class HistoryActivity extends AppCompatActivity {
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
-                make_Chart();
+                make_Chart((PieChart) findViewById(R.id.piechart),(LineChart) findViewById(R.id.hrchart));
+                make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
             }
         }
     }
