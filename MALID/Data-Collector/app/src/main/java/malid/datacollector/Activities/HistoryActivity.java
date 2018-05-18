@@ -177,8 +177,13 @@ public class HistoryActivity extends AppCompatActivity {
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setTransparentCircleRadius(61f);
         pieChart.setCenterText("운동");
-        if(View == findViewById(R.id.piechartdaily) ) pieChart.setCenterTextSize(10f);
-        else pieChart.setCenterTextSize(35f);
+        if(View == findViewById(R.id.piechartdaily) ) {
+            pieChart.setCenterTextSize(10f);
+            pieChart.setEntryLabelTextSize(10f);
+        }
+        else {
+            pieChart.setCenterTextSize(35f);
+        }
         ArrayList<PieEntry> Values = new ArrayList<PieEntry>();
         for(int i = 0; i < class_name.size();i++)
             Values.add(new PieEntry((float)count.get(i)/sum, class_name.get(i)));
@@ -305,7 +310,6 @@ public class HistoryActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 make_Chart((PieChart) findViewById(R.id.piechart),(LineChart) findViewById(R.id.hrchart));
-                make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
             }
         }
     }
@@ -391,6 +395,14 @@ public class HistoryActivity extends AppCompatActivity {
             else {
                 Log.v("test", "DB result : "+result);
                 try {
+                    class_name = new ArrayList<>();
+                    class_name.add("정지");
+                    class_name.add("걷기");
+                    class_name.add("달리기");
+                    int pausecount=0,walkcount=0,runcount=0;
+                    count = new ArrayList<>();
+                    hr = new ArrayList();
+                    sum=0;
                     JSONArray jarray = new JSONArray(result);
                     if(jarray.length()==0){
                         Toast.makeText(getApplicationContext(), "해당 날짜에 대한 데이터가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
@@ -398,17 +410,23 @@ public class HistoryActivity extends AppCompatActivity {
                     for(int i=jarray.length()-1; i>=0; i--){
                         JSONObject jobject = jarray.getJSONObject(i);
                         String Class_name = "";
-                        if(jobject.optString("class").equals("0")) Class_name = "정지";
-                        else if(jobject.optString("class").equals("1")) Class_name = "걷기";
-                        else if(jobject.optString("class").equals("2")) Class_name = "달리기";
+                        if(jobject.optString("class").equals("0")) {Class_name = "정지";++pausecount; }
+                        else if(jobject.optString("class").equals("1")) {Class_name = "걷기";++walkcount;}
+                        else if(jobject.optString("class").equals("2")) {Class_name = "달리기";++runcount;}
                         setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
+                        sum += 1;
+                        hr.add(Integer.parseInt(jobject.optString("HR")));
                     }
+                    count.add(0,pausecount);
+                    count.add(1,walkcount);
+                    count.add(2,runcount);
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
                     RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
                     viewview.setVisibility(viewview.GONE);
                     viewviewview.setVisibility(viewviewview.VISIBLE);
                     realadapter.notifyDataSetChanged();
                     viewviewview.postInvalidate();
+                    make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
