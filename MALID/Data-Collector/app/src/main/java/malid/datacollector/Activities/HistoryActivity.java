@@ -89,6 +89,10 @@ public class HistoryActivity extends AppCompatActivity {
         init_Tap();
         new historyTask().execute(history_url);
 
+        PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+        view123.setVisibility(View.INVISIBLE);
+        LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+        view456.setVisibility(View.INVISIBLE);
         albumList=new ArrayList<historyitem>();
         initLayout();
         mDate = (DatePicker)findViewById(R.id.datepickdaily);
@@ -100,6 +104,10 @@ public class HistoryActivity extends AppCompatActivity {
                 RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
                 viewview.setVisibility(viewview.VISIBLE);
                 viewviewview.setVisibility(viewviewview.GONE);
+                PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+                view123.setVisibility(View.INVISIBLE);
+                LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+                view456.setVisibility(View.INVISIBLE);
                 albumList.clear();
                 insertindex=-1;
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
@@ -109,6 +117,10 @@ public class HistoryActivity extends AppCompatActivity {
                 forsetmessage=findViewById(R.id.dailyhistorydateshow);
                 forsetmessage.setText("측정 날짜 : " + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
                         + "일");
+                TextView one = (TextView)findViewById(R.id.dailyheartgraphnotify);
+                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                one=(TextView)findViewById(R.id.dailypiegraphnotify);
+                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
             }
         });
@@ -407,26 +419,33 @@ public class HistoryActivity extends AppCompatActivity {
                     if(jarray.length()==0){
                         Toast.makeText(getApplicationContext(), "해당 날짜에 대한 데이터가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
                     }
-                    for(int i=jarray.length()-1; i>=0; i--){
-                        JSONObject jobject = jarray.getJSONObject(i);
-                        String Class_name = "";
-                        if(jobject.optString("class").equals("0")) {Class_name = "정지";++pausecount; }
-                        else if(jobject.optString("class").equals("1")) {Class_name = "걷기";++walkcount;}
-                        else if(jobject.optString("class").equals("2")) {Class_name = "달리기";++runcount;}
-                        setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
-                        sum += 1;
-                        hr.add(Integer.parseInt(jobject.optString("HR")));
+                    else{
+                        for(int i=jarray.length()-1; i>=0; i--){
+                            JSONObject jobject = jarray.getJSONObject(i);
+                            String Class_name = "";
+                            if(jobject.optString("class").equals("0")) {Class_name = "정지";++pausecount; }
+                            else if(jobject.optString("class").equals("1")) {Class_name = "걷기";++walkcount;}
+                            else if(jobject.optString("class").equals("2")) {Class_name = "달리기";++runcount;}
+                            setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
+                            sum += 1;
+                            hr.add(Integer.parseInt(jobject.optString("HR")));
+                        }
+                        count.add(0,pausecount);
+                        count.add(1,walkcount);
+                        count.add(2,runcount);
+                        make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
+                        PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+                        view123.setVisibility(View.VISIBLE);
+                        LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+                        view456.setVisibility(View.VISIBLE);
                     }
-                    count.add(0,pausecount);
-                    count.add(1,walkcount);
-                    count.add(2,runcount);
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
                     RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
                     viewview.setVisibility(viewview.GONE);
                     viewviewview.setVisibility(viewviewview.VISIBLE);
                     realadapter.notifyDataSetChanged();
                     viewviewview.postInvalidate();
-                    make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
+
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
