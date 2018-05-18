@@ -174,9 +174,11 @@ public class HistoryActivity extends AppCompatActivity {
         pieChart.setDragDecelerationFrictionCoef(0.95f);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
+        pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setTransparentCircleRadius(61f);
         pieChart.setCenterText("운동");
-        pieChart.setCenterTextSize(35f);
+        if(View == findViewById(R.id.piechartdaily) ) pieChart.setCenterTextSize(10f);
+        else pieChart.setCenterTextSize(35f);
         ArrayList<PieEntry> Values = new ArrayList<PieEntry>();
         for(int i = 0; i < class_name.size();i++)
             Values.add(new PieEntry((float)count.get(i)/sum, class_name.get(i)));
@@ -191,7 +193,7 @@ public class HistoryActivity extends AppCompatActivity {
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.BLACK);
         pieChart.setData(data);
 
         hrChart = View2;
