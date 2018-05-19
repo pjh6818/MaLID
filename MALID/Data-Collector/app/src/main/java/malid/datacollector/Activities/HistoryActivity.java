@@ -77,6 +77,7 @@ public class HistoryActivity extends AppCompatActivity {
     int ccount=99999999;
     DatePicker mDate;
     TextView forsetmessage;
+    int maxx=0,minn=1000,averagee=0,counttt=0;
     ////////////////////////////////
 
     @Override
@@ -224,7 +225,6 @@ public class HistoryActivity extends AppCompatActivity {
         LineData hrdata = new LineData(dataset);
         dataset.setDrawCircles(false);
         dataset.setColor(Color.RED);
-
         hrChart.setData(hrdata);
         hrChart.animateY(5000);
 
@@ -291,6 +291,7 @@ public class HistoryActivity extends AppCompatActivity {
             }
             else {
                 try {
+                    maxx=0;minn=1000;averagee=0;counttt=0;
                     class_name = new ArrayList<>();
                     count = new ArrayList<>();
                     JSONArray jarray = new JSONArray(result);
@@ -317,11 +318,20 @@ public class HistoryActivity extends AppCompatActivity {
                         Log.v("str", str);
                         t=Integer.parseInt(temp);
                         hr.add(t);
+                        if(maxx<t) maxx= t;
+                        if(minn>t) minn= t;
+                        averagee=averagee+t;
+                        counttt+=1;
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
                 make_Chart((PieChart) findViewById(R.id.piechart),(LineChart) findViewById(R.id.hrchart));
+                TextView yes = findViewById(R.id.allexercisecounttextview);
+                yes.setText("정지 : " + count.get(0) + "회 걷기 : " + count.get(1) + "회 달리기 : " + count.get(2) + "회");
+                yes=findViewById(R.id.allexercisehearttextview);
+                averagee/=counttt;
+                yes.setText("최고 심박수 : " + maxx + " 최저 심박수 : " + minn + " 평균 심박수 : " + averagee);
             }
         }
     }
