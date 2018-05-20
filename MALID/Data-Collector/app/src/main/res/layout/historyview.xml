@@ -32,10 +32,111 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp">
                     <LinearLayout
+                        android:id="@+id/all"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:weightSum="100">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="50"
+                            android:background="@drawable/buttonbg"
+                            android:orientation="vertical"
+                            android:weightSum="100">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:background="@drawable/buttonbgblack"
+                                android:gravity="center"
+                                android:text="종류별 통계"
+                                android:textColor="@color/White"
+                                android:textStyle="bold" />
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/piechart"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_weight="80">
+
+                            </com.github.mikephil.charting.charts.PieChart>
+
+                            <TextView
+                                android:id="@+id/allexercisecounttextview"
+                                android:textSize="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text = "정지 :    걷기 :    달리기 :"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:layout_weight="20"
+                                android:gravity="center"
+                                android:text="데이터베이스에 기록된 전체 운동의 종류별 비율입니다."
+                                android:textSize="13dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="40"
+                            android:background="@drawable/buttonbg"
+                            android:orientation="vertical"
+                            android:weightSum="100">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:background="@drawable/buttonbgblack"
+                                android:gravity="center"
+                                android:text="심박수 통계"
+                                android:textColor="@color/White"
+                                android:textStyle="bold" />
+
+                            <com.github.mikephil.charting.charts.LineChart
+                                android:id="@+id/hrchart"
+                                android:layout_width="match_parent"
+                                android:layout_height="180dp"
+                                android:layout_weight="80">
+
+                            </com.github.mikephil.charting.charts.LineChart>
+                            <TextView
+                                android:id="@+id/allexercisehearttextview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textSize="10dp"
+                                android:text="최대 심박수 :  최저 심박수 :    평균 심박수 : "/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_weight="20"
+                                android:gravity="center"
+                                android:text="데이터베이스에 기록된 전체 심박수의 분포를 보여줍니다.\n 가로축은 시간, 세로축은 심박수를 의미합니다."
+                                android:textSize="13dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="10"
+                            android:gravity="center"
+                            android:text="특정 날짜와 기간에 대한 운동 데이터 조회는\n 다른 탭에서 지원합니다." />
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/daily"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="5dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -56,17 +157,20 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
+
                                 <DatePicker
                                     android:id="@+id/datepickdaily"
+                                    android:gravity="center"
                                     android:layout_width="300dp"
                                     android:layout_height="80dp"
-                                    android:spinnersShown="true"
                                     android:calendarViewShown="false"
-                                    android:datePickerMode="spinner"></DatePicker>
+                                    android:datePickerMode="spinner"
+                                    android:spinnersShown="true"></DatePicker>
                                 <Button
                                     android:id="@+id/searchbutton"
-                                    android:layout_width="100dp"
+                                    android:layout_width="50dp"
                                     android:layout_height="40dp"
+                                    android:layout_marginLeft="20dp"
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:background="@drawable/buttonstate"
@@ -77,10 +181,11 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:orientation="horizontal"
-                            android:layout_height="200dp">
+                            android:layout_marginBottom="5dp"
+                            android:layout_height="230dp">
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="200dp"
+                                android:layout_height="230dp"
                                 android:layout_weight="50"
                                 android:background="@drawable/buttonbg"
                                 android:orientation="vertical"
@@ -98,26 +203,28 @@
                                 <com.github.mikephil.charting.charts.PieChart
                                     android:id="@+id/piechartdaily"
                                     android:layout_width="match_parent"
-                                    android:layout_height="220dp"
-                                    android:layout_weight="80">
+                                    android:layout_height="0dp"
+                                    android:layout_weight="90">
 
                                 </com.github.mikephil.charting.charts.PieChart>
 
                                 <TextView
+                                    android:id="@+id/dailypiegraphnotify"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dp"
-                                    android:layout_weight="20"
+                                    android:layout_weight="10"
                                     android:gravity="center"
-                                    android:text="데이터베이스에 기록된 전체 운동의 종류별 비율입니다."
+                                    android:text="데이터 조회시 갱신됩니다."
                                     android:textSize="13dp" />
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="200dp"
+                                android:layout_height="230dp"
                                 android:layout_weight="40"
                                 android:background="@drawable/buttonbg"
                                 android:orientation="vertical"
+                                android:layout_marginLeft="5dp"
                                 android:weightSum="100">
 
                                 <TextView
@@ -138,19 +245,21 @@
                                 </com.github.mikephil.charting.charts.LineChart>
 
                                 <TextView
+                                    android:id="@+id/dailyheartgraphnotify"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
                                     android:layout_marginBottom="5dp"
                                     android:layout_weight="20"
                                     android:gravity="center"
-                                    android:text="데이터베이스에 기록된 전체 심박수의 분포를 보여줍니다.\n 가로축은 시간, 세로축은 심박수를 의미합니다."
+                                    android:text="데이터 조회시 갱신됩니다."
                                     android:textSize="13dp" />
                             </LinearLayout>
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="350dp"
+                            android:layout_height="200dp"
+                            android:layout_weight="1"
                             android:background="@drawable/buttonbg"
                             android:orientation="vertical">
                             <TextView
@@ -184,7 +293,7 @@
                                     android:paddingRight="10dp"
                                     android:layout_gravity="top"
                                     android:gravity="center"
-                                    android:text="index"/>
+                                    android:text="idx"/>
                                 <TextView
                                     android:layout_width="1dp"
                                     android:layout_height="wrap_content"
@@ -252,92 +361,7 @@
                             </android.support.v7.widget.RecyclerView>
                         </LinearLayout>
                     </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/all"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="5dp"
-                        android:weightSum="100">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="50"
-                            android:background="@drawable/buttonbg"
-                            android:orientation="vertical"
-                            android:weightSum="100">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:background="@drawable/buttonbgblack"
-                                android:gravity="center"
-                                android:text="종류별 통계"
-                                android:textColor="@color/White"
-                                android:textStyle="bold" />
-
-                            <com.github.mikephil.charting.charts.PieChart
-                                android:id="@+id/piechart"
-                                android:layout_width="match_parent"
-                                android:layout_height="220dp"
-                                android:layout_weight="80">
-
-                            </com.github.mikephil.charting.charts.PieChart>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:layout_weight="20"
-                                android:gravity="center"
-                                android:text="데이터베이스에 기록된 전체 운동의 종류별 비율입니다."
-                                android:textSize="13dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="40"
-                            android:background="@drawable/buttonbg"
-                            android:orientation="vertical"
-                            android:weightSum="100">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:background="@drawable/buttonbgblack"
-                                android:gravity="center"
-                                android:text="심박수 통계"
-                                android:textColor="@color/White"
-                                android:textStyle="bold" />
-
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/hrchart"
-                                android:layout_width="match_parent"
-                                android:layout_height="180dp"
-                                android:layout_weight="80">
-
-                            </com.github.mikephil.charting.charts.LineChart>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:layout_marginBottom="5dp"
-                                android:layout_weight="20"
-                                android:gravity="center"
-                                android:text="데이터베이스에 기록된 전체 심박수의 분포를 보여줍니다.\n 가로축은 시간, 세로축은 심박수를 의미합니다."
-                                android:textSize="13dp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="10"
-                            android:gravity="center"
-                            android:text="특정 날짜와 기간에 대한 운동 데이터 조회는\n 다른 탭에서 지원합니다." />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/weekly"

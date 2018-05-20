@@ -77,6 +77,7 @@ public class HistoryActivity extends AppCompatActivity {
     int ccount=99999999;
     DatePicker mDate;
     TextView forsetmessage;
+    int maxx=0,minn=1000,averagee=0,counttt=0;
     ////////////////////////////////
 
     @Override
@@ -89,6 +90,10 @@ public class HistoryActivity extends AppCompatActivity {
         init_Tap();
         new historyTask().execute(history_url);
 
+        PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+        view123.setVisibility(View.INVISIBLE);
+        LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+        view456.setVisibility(View.INVISIBLE);
         albumList=new ArrayList<historyitem>();
         initLayout();
         mDate = (DatePicker)findViewById(R.id.datepickdaily);
@@ -100,6 +105,10 @@ public class HistoryActivity extends AppCompatActivity {
                 RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
                 viewview.setVisibility(viewview.VISIBLE);
                 viewviewview.setVisibility(viewviewview.GONE);
+                PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+                view123.setVisibility(View.INVISIBLE);
+                LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+                view456.setVisibility(View.INVISIBLE);
                 albumList.clear();
                 insertindex=-1;
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
@@ -109,6 +118,10 @@ public class HistoryActivity extends AppCompatActivity {
                 forsetmessage=findViewById(R.id.dailyhistorydateshow);
                 forsetmessage.setText("측정 날짜 : " + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
                         + "일");
+                TextView one = (TextView)findViewById(R.id.dailyheartgraphnotify);
+                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                one=(TextView)findViewById(R.id.dailypiegraphnotify);
+                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
             }
         });
@@ -174,9 +187,16 @@ public class HistoryActivity extends AppCompatActivity {
         pieChart.setDragDecelerationFrictionCoef(0.95f);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
+        pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setTransparentCircleRadius(61f);
         pieChart.setCenterText("운동");
-        pieChart.setCenterTextSize(35f);
+        if(View == findViewById(R.id.piechartdaily) ) {
+            pieChart.setCenterTextSize(10f);
+            pieChart.setEntryLabelTextSize(10f);
+        }
+        else {
+            pieChart.setCenterTextSize(35f);
+        }
         ArrayList<PieEntry> Values = new ArrayList<PieEntry>();
         for(int i = 0; i < class_name.size();i++)
             Values.add(new PieEntry((float)count.get(i)/sum, class_name.get(i)));
@@ -191,7 +211,7 @@ public class HistoryActivity extends AppCompatActivity {
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(dataSet);
         data.setValueTextSize(10f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.BLACK);
         pieChart.setData(data);
 
         hrChart = View2;
@@ -205,7 +225,6 @@ public class HistoryActivity extends AppCompatActivity {
         LineData hrdata = new LineData(dataset);
         dataset.setDrawCircles(false);
         dataset.setColor(Color.RED);
-
         hrChart.setData(hrdata);
         hrChart.animateY(5000);
 
@@ -272,6 +291,7 @@ public class HistoryActivity extends AppCompatActivity {
             }
             else {
                 try {
+                    maxx=0;minn=1000;averagee=0;counttt=0;
                     class_name = new ArrayList<>();
                     count = new ArrayList<>();
                     JSONArray jarray = new JSONArray(result);
@@ -298,12 +318,20 @@ public class HistoryActivity extends AppCompatActivity {
                         Log.v("str", str);
                         t=Integer.parseInt(temp);
                         hr.add(t);
+                        if(maxx<t) maxx= t;
+                        if(minn>t) minn= t;
+                        averagee=averagee+t;
+                        counttt+=1;
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
                 make_Chart((PieChart) findViewById(R.id.piechart),(LineChart) findViewById(R.id.hrchart));
-                make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
+                TextView yes = findViewById(R.id.allexercisecounttextview);
+                yes.setText("정지 : " + count.get(0) + "회 걷기 : " + count.get(1) + "회 달리기 : " + count.get(2) + "회");
+                yes=findViewById(R.id.allexercisehearttextview);
+                averagee/=counttt;
+                yes.setText("최고 심박수 : " + maxx + " 최저 심박수 : " + minn + " 평균 심박수 : " + averagee);
             }
         }
     }
@@ -389,17 +417,37 @@ public class HistoryActivity extends AppCompatActivity {
             else {
                 Log.v("test", "DB result : "+result);
                 try {
+                    class_name = new ArrayList<>();
+                    class_name.add("정지");
+                    class_name.add("걷기");
+                    class_name.add("달리기");
+                    int pausecount=0,walkcount=0,runcount=0;
+                    count = new ArrayList<>();
+                    hr = new ArrayList();
+                    sum=0;
                     JSONArray jarray = new JSONArray(result);
                     if(jarray.length()==0){
                         Toast.makeText(getApplicationContext(), "해당 날짜에 대한 데이터가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
                     }
-                    for(int i=jarray.length()-1; i>=0; i--){
-                        JSONObject jobject = jarray.getJSONObject(i);
-                        String Class_name = "";
-                        if(jobject.optString("class").equals("0")) Class_name = "정지";
-                        else if(jobject.optString("class").equals("1")) Class_name = "걷기";
-                        else if(jobject.optString("class").equals("2")) Class_name = "달리기";
-                        setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
+                    else{
+                        for(int i=jarray.length()-1; i>=0; i--){
+                            JSONObject jobject = jarray.getJSONObject(i);
+                            String Class_name = "";
+                            if(jobject.optString("class").equals("0")) {Class_name = "정지";++pausecount; }
+                            else if(jobject.optString("class").equals("1")) {Class_name = "걷기";++walkcount;}
+                            else if(jobject.optString("class").equals("2")) {Class_name = "달리기";++runcount;}
+                            setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
+                            sum += 1;
+                            hr.add(Integer.parseInt(jobject.optString("HR")));
+                        }
+                        count.add(0,pausecount);
+                        count.add(1,walkcount);
+                        count.add(2,runcount);
+                        make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
+                        PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+                        view123.setVisibility(View.VISIBLE);
+                        LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+                        view456.setVisibility(View.VISIBLE);
                     }
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
                     RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
@@ -407,6 +455,7 @@ public class HistoryActivity extends AppCompatActivity {
                     viewviewview.setVisibility(viewviewview.VISIBLE);
                     realadapter.notifyDataSetChanged();
                     viewviewview.postInvalidate();
+
                 } catch (JSONException e){
                     e.printStackTrace();
                 }

@@ -183,7 +183,7 @@
                     android:paddingRight="10dp"
                     android:layout_gravity="top"
                     android:gravity="center"
-                    android:text="index"/>
+                    android:text="idx"/>
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
