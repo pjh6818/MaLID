@@ -284,6 +284,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     void make_chart_for_hr(JSONObject jsonObject, JSONArray jarray) {
+        maxx=0;minn=1000;averagee=0;counttt=0;
         globaljsonobject = jsonObject;
         globaljsonarray = jarray;
         String str;
@@ -343,6 +344,10 @@ public class HistoryActivity extends AppCompatActivity {
         dataset.setColor(Color.RED);
         hrChart.setData(hrdata);
         hrChart.animateY(5000);
+        TextView yes = findViewById(R.id.allexercisecounttextview);
+        yes=findViewById(R.id.allexercisehearttextview);
+        averagee/=counttt;
+        yes.setText("최고 심박수 : " + maxx + " 최저 심박수 : " + minn + " 평균 심박수 : " + averagee);
     }
 
     public class historyTask extends AsyncTask<String, String, String> {
