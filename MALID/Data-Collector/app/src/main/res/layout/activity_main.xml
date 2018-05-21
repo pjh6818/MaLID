@@ -8,17 +8,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/okok"
-            android:background="@drawable/buttonbg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="7dp"
             android:layout_marginStart="7dp"
-            android:layout_marginBottom="1px"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:padding="5dp">
 
@@ -26,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="미밴드 접속 상태:"
+                android:text="State:"
                 android:textStyle="bold" />
 
             <TextView
@@ -35,219 +34,183 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:text="ID :"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.9" />
-
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:background="@drawable/buttonbg"
-            android:layout_gravity="center"
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
-            android:layout_marginStart="7dp"
-            android:orientation="vertical"
-            android:padding="5dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.1"
-                    android:src="@drawable/heart"/>
-                <TextView
-                    android:id="@+id/txt_heart"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/RG2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/park"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.4"
-                    android:textSize="30dp"
-                    android:text="미측정"/>
+                    android:layout_weight="1"
+                    android:text="박종현" />
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.1"
-                    android:src="@drawable/timer"/>
-                <TextView
-                    android:id="@+id/txtTimer"
-                    android:layout_width="50dp"
+                <RadioButton
+                    android:id="@+id/kim"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.4"
-                    android:text="0"
-                    android:textSize="30dp" />
 
+                    android:text="김태영" />
 
-            </LinearLayout>
-            <TextView
-                android:id="@+id/accelview"
-                android:layout_width="500dp"
-                android:layout_height="20dp"
-                android:text="가속도센서 결과창"/>
+                <RadioButton
+                    android:id="@+id/ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
+                    android:text="옥준영" />
+
+                <RadioButton
+                    android:id="@+id/song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="송민규" />
+
+                <RadioButton
+                    android:id="@+id/test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="테스트" />
+            </RadioGroup>
         </LinearLayout>
+        <HorizontalScrollView
+            android:id="@+id/scrollview1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <RadioGroup
+                android:id="@+id/RG1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="정지" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="걷기" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="달리기" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="걷기(손)" />
+
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="달리기(손)" />
+
+                <RadioButton
+                    android:id="@+id/radioButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="자전거" />
+
+
+            </RadioGroup>
+        </HorizontalScrollView>
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginBottom="1dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:orientation="vertical">
 
-
-
-            <Button
-                android:id="@+id/btnServer"
-                android:background="@drawable/buttonbg"
-                android:textColor="@color/Red"
+            <TextView
+                android:id="@+id/txtTimer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="측정 시작" />
-
-        </LinearLayout>
+                android:layout_height="20dp" />
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttonbg"
-                android:orientation="vertical">
-
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/buttonbg"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:layout_gravity="top"
-                    android:textStyle="bold"
-                    android:text = "HISTORY"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:background="@drawable/buttonbg"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text = "측정시간"/>
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
-                        android:background="@drawable/buttonbg"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text = "심박수"/>
-                    <TextView
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
-                        android:background="@drawable/buttonbg"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text = "운동 종류"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/progrssbarlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="현재 서버에서 데이터를 처리 중입니다. \n 측정을 완료 한 후 터치해주세요"/>
-
-                </LinearLayout>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone">
-                    </android.support.v7.widget.RecyclerView>
-
-                <ScrollView
-                    android:layout_weight="1"
-                    android:id="@+id/DBhistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp">
-                </ScrollView>
+                    android:id="@+id/orientview"
+                    android:layout_width="130dp"
+                    android:layout_height="80dp"
+                    android:text="방향센서 결과창"
+                    />
+                <TextView
+                    android:id="@+id/accelview"
+                    android:layout_width="130dp"
+                    android:layout_height="80dp"
+                    android:text="가속도센서 결과창"/>
 
             </LinearLayout>
 
 
+            <Button
+                android:id="@+id/btnServer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start" />
 
-
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:background="@drawable/buttonbg"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="215dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_gravity="right"
             android:orientation="vertical"
             android:padding="10dp">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Information"
+                android:textStyle="bold" />
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="INFORMATION"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="현재 운동 : "
+                    android:textStyle="bold"/>
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="15dp"
+                    android:layout_height="20dp" />
+            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
                 android:id="@+id/serverscroll">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -256,23 +219,17 @@
                     <TextView
                         android:id="@+id/txtByte"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="측정 전 정보 : \n측정 후 정보 : \n시간 : \n심박수 : "/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text = "서버 메시지 : "/>
-                        <TextView
-                            android:id="@+id/serverView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/Red"
-                            android:text="현재 서버가 데이터를 수신하지 않고 있습니다."/>
-                    </LinearLayout>
+                        android:layout_height="wrap_content" />
 
+                    <TextView
+                        android:id="@+id/txt_heart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/serverView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 

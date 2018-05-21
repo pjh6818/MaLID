@@ -24,22 +24,14 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -53,23 +45,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import malid.datacollector.CounterService;
 import malid.datacollector.Helpers.CustomBluetoothProfile;
-import malid.datacollector.Helpers.historyitem;
-import malid.datacollector.Helpers.historyitemadapter;
 import malid.datacollector.R;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
-
-
-    private RecyclerView lecyclerView;
-    List<historyitem> albumList;
-    historyitemadapter realadapter;
-    LinearLayoutManager realmanager;
-    int insertindex=-1;
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothGatt bluetoothGatt;
@@ -77,14 +59,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Button btnServer;
     RadioGroup rg1, rg2;
-    TextView txtState, txtTimer, txtByte, txt_heart, serverView, txtID;
+    TextView txtState, txtTimer, txtByte, txt_heart, serverView;
     ScrollView servscroll;
     HRThread hrthread = new HRThread();
     // GetCountThread getcountThread = new GetCountThread();
     Thread thread;
     SensorThread sensor_thread;
     String address = null;
-    String ID = null;
     private CounterService binder;
     private boolean running = false;
     private static PowerManager.WakeLock wakelock;
@@ -131,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        ID = intent.getStringExtra("ID");
 
         int uiOptions = this.getWindow().getDecorView().getSystemUiVisibility();
         int newUiOptions = uiOptions;
@@ -150,10 +129,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initializeObjects();
         initilaizeComponents();
         initializeEvents();
-        txtID.setText(ID);
+
         getBoundedDevice();
 
-        //tv = (TextView)findViewById(R.id.orientview);
+        tv = (TextView)findViewById(R.id.orientview);
         tv2=(TextView)findViewById(R.id.accelview);
 
         // 센서객체를 얻어오기 위해서는 센서메니저를 통해서만 가능하다
@@ -161,41 +140,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sm2=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         s = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION); // 방향센서
         s2=sm2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-
-        albumList=new ArrayList<historyitem>();
-        initLayout();
-    }
-
-    private void initLayout(){
-
-        lecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
-        realmanager = new LinearLayoutManager(this);
-        lecyclerView.setLayoutManager(realmanager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(lecyclerView.getContext(),
-                realmanager.getOrientation());
-        lecyclerView.addItemDecoration(dividerItemDecoration);
-        lecyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
-    private void setData(String time, String hr, String exercise){
-
-            historyitem album = new historyitem();
-            album.setTitle(time);
-            album.setArtist(hr);
-            album.setImage(exercise);
-            insertindex++;
-            albumList.add(insertindex,album);
-            /*new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                }
-            },1000);*/
-            realadapter.notifyItemInserted(insertindex);
-            //lecyclerView.invalidate();
-            //lecyclerView.requestLayout();
-            //lecyclerView.scrollToPosition(albumList.size() -1);
-
     }
 
     String getBoundedDevice() {   // MI Band 2 MAC address 자동등록
@@ -238,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void initilaizeComponents() {
-        // rg1=(RadioGroup)findViewById(R.id.RG1);
-        // rg2=(RadioGroup)findViewById(R.id.RG2);
+        rg1=(RadioGroup)findViewById(R.id.RG1);
+        rg2=(RadioGroup)findViewById(R.id.RG2);
         btnServer = (Button) findViewById(R.id.btnServer);
         txtState = (TextView) findViewById(R.id.txtState);
         txtTimer = (TextView) findViewById(R.id.txtTimer);
@@ -247,11 +191,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txt_heart = (TextView)findViewById(R.id.txt_heart);
         serverView = (TextView) findViewById(R.id.serverView);
         servscroll = (ScrollView) findViewById(R.id.serverscroll);
-        txtID = (TextView) findViewById(R.id.txtID);
     }
 
     void initializeEvents() {
-        /*
        rg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -274,12 +216,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 else if(checkedname==R.id.test)nametag=5;
                 else nametag =-1;
             }
-        });*/
+        });
 
         btnServer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(running == false) {   // 서버전송 시작
+                if(Label == -1)
+                    Toast.makeText(getApplicationContext(),"운동종류를 선택하세요.", Toast.LENGTH_SHORT).show();
+                else if(nametag == -1)
+                    Toast.makeText(getApplicationContext(),"이름을 선택하세요.", Toast.LENGTH_SHORT).show();
+                else if(running == false) {   // 서버전송 시작
                     prev_step=0;
                     prev_distance=0;
                     prev_cal=0;
@@ -289,9 +235,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Heart_rate = 0;
                     HR_list.clear();
                     XYZ_list.clear();
-                    txtByte.setText("측정 전 정보 : "+prev_step+"걸음수 "+prev_distance+"미터 "+prev_cal+"칼로리\n측정 후 정보 : " +curr_step+"걸음수 "
-                                    +curr_distance+"미터 "+curr_cal+"칼로리\n시간 : "+time+"초\n"+"심박수 : ");
-                    //txt_heart.setText("심박수 : ");
+                    txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
+                                    +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : ");
+                    txt_heart.setText("심박수 : ");
                     txtTimer.setText("0");
 
                     Toast.makeText(getApplicationContext(),"서버 전송을 시작합니다.", Toast.LENGTH_SHORT).show();
@@ -321,13 +267,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
                    mNotificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     mNotificationManager.notify(1234,mBuilder.build());
-                    albumList.clear();
-                    insertindex=-1;
-                    realadapter.notifyDataSetChanged();
-                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
-                    viewviewview.setVisibility(viewviewview.GONE);
-                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
-                    viewview.setVisibility(viewview.VISIBLE);
                     btnServer.setText("Stop");
                     getInformation();
 
@@ -341,22 +280,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 else if(running == true){      // 서버전송 종료
                     Toast.makeText(getApplicationContext(),"서버 전송을 중지합니다.", Toast.LENGTH_SHORT).show();
-                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
-                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.recyclerView);
-                    viewview.setVisibility(viewview.GONE);
-                    viewviewview.setVisibility(viewviewview.VISIBLE);
                     mNotificationManager.cancel(1234);
-                    btnServer.setText("측정 시작");
-                    serverView.setTextColor(getResources().getColor(R.color.Red));
-                    serverView.setText("현재 서버가 데이터를 수신하지 않고 있습니다.");
+                    btnServer.setText("Start");
                     getInformation();
 
                     // unbindService(connection);
                     running = false;
                     thread.interrupt();
-
-                    btnServer.setEnabled(false);    // 버튼 비활성화
-                    new MainTask().execute("http://13.125.101.194:3000/main");
                 }
                 else
                     Toast.makeText(getApplicationContext(),"알 수 없는 오류 발생", Toast.LENGTH_SHORT).show();
@@ -366,8 +296,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void sendServer() {
-        txtByte.setText("측정 전 정보 : "+prev_step+"걸음수 "+prev_distance+"미터 "+prev_cal+"칼로리\n측정 후 정보 : " +curr_step+"걸음수 "
-                +curr_distance+"미터 "+curr_cal+"칼로리\n시간 : "+time+"s\n"+"심박수 : "+HR_list.toString());
+        txtByte.setText("prev info : "+prev_step+"step "+prev_distance+"m "+prev_cal+"cal\ncurr info : " +curr_step+"step "
+                +curr_distance+"m "+curr_cal+"cal\ntime : "+time+"s\n"+"Heart Rate : "+HR_list.toString());
     }
     void getInformation() { // 걸음수, 거리, 칼로리 정보
         BluetoothGattCharacteristic bchar = bluetoothGatt.getService(CustomBluetoothProfile.Information.service)
@@ -403,14 +333,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(time!=0 && time%5==0){
                     if(XYZ_list.size() < 150)continue;
                     Log.d("sensor", XYZ_list.toString());
-                    // setData(String.valueOf(time),String.valueOf(Heart_rate),"정지");
                     try {
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.accumulate("ID", ID);
+                        jsonObject.accumulate("Name", nametag);
                         jsonObject.accumulate("HeartRate", Heart_rate);
                         Log.d("sensorlength", Integer.toString(XYZ_list.size()));
                         jsonObject.accumulate("XYZ_list", XYZ_list);
                         //jsonObject.accumulate("Gyro_list", Gyro_list);
+                        jsonObject.accumulate("Label", Label);
                         HttpURLConnection con = null;
                         BufferedReader reader = null;
 
@@ -444,9 +374,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                 buffer.append("\n");
                             }
 
-                            serverView.setTextColor(getResources().getColor(R.color.green));
                             serverView.setText(buffer.toString());//서버로 부터 받은 문자 textView에 출력
-
                             serverView.invalidate();
                             serverView.requestLayout();
                             servscroll.invalidate();
@@ -483,9 +411,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         protected void onProgressUpdate(String... params) {
             txtTimer.setText(time + "");
-            if(Heart_rate>100)txt_heart.setTextColor(getResources().getColor(R.color.Red));
-            else txt_heart.setTextColor(getResources().getColor(R.color.Dark));
-            txt_heart.setText(""+ Heart_rate);
+            txt_heart.setText("심박수 : " + Heart_rate);
             if(time!=0 && time%5==0) {
                 HR_list.add(Heart_rate);
             }
@@ -532,12 +458,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     void stateConnected() {
         bluetoothGatt.discoverServices();
-        txtState.setText("정상");
+        txtState.setText("Connected");
     }
 
     void stateDisconnected() {
         bluetoothGatt.disconnect();
-        txtState.setText("연결되지 않음");
+        txtState.setText("Disconnected");
     }
 
     void startScanHeartRate() {
@@ -694,19 +620,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void onSensorChanged(SensorEvent event) {
         // 센서값이 변경되었을 때 호출되는 콜백 메서드
-        /*if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+        if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
             // 방향센서값이 변경된거라면
             String str = "방향센서값"
                     +"\n방위각: "+event.values[0]
                     +"\n피치 : "+event.values[1]
                     +"\n롤 : "+event.values[2];
             tv.setText(str);
-        }*/
+        }
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             String str = "가속센서값"
-                    +" X : "+ (int)event.values[0]
-                    +" Y : "+ (int)event.values[1]
-                    +" Z : "+ (int)event.values[2];
+                    +"\nX : "+ event.values[0]
+                    +"\nY : "+ event.values[1]
+                    +"\nZ : "+ event.values[2];
             tv2.setText(str);
             Acc_X = event.values[0];
             Acc_Y = event.values[1];
@@ -735,107 +661,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         }
     }
-
-    public class MainTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("ID", ID);
-                jsonObject.accumulate("count", time/5);
-
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
-
-                if(running == false && time > 5){
-                    Thread.sleep(3000); // 3초 대기
-                }
-                try{
-                    URL url = new URL(urls[0]);
-
-                    con = (HttpURLConnection) url.openConnection();
-                    Log.v("test", "openConnection");
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Cache-Control", "no-cache");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    con.setRequestProperty("Accept", "text/html");
-                    con.setDoOutput(true);
-                    con.setDoInput(true);
-                    con.connect();
-
-                    OutputStream outStream = con.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                    writer.write(jsonObject.toString());
-                    writer.flush();
-                    writer.close();
-
-                    InputStream stream = con.getInputStream();
-
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    StringBuffer buffer = new StringBuffer();
-
-                    String line = "";
-                    while((line = reader.readLine()) != null){
-                        buffer.append(line);
-                    }
-
-                    return buffer.toString();
-
-                } catch (MalformedURLException e){
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if(con != null){
-                        con.disconnect();
-                    }
-                    try {
-                        if(reader != null){
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.v("test", "onPostExcute");
-            if(running == false) btnServer.setEnabled(true);
-            if(result == null){
-                Toast.makeText(getApplicationContext(), "서버와 연결에 실패하였습니다.", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Log.v("test", "DB result : "+result);
-                try {
-                    JSONArray jarray = new JSONArray(result);
-                    for(int i=jarray.length()-1; i>=0; i--){
-                        JSONObject jobject = jarray.getJSONObject(i);
-                        String Class_name = "";
-                        if(jobject.optString("class").equals("0")) Class_name = "정지";
-                        else if(jobject.optString("class").equals("1")) Class_name = "걷기";
-                        else if(jobject.optString("class").equals("2")) Class_name = "달리기";
-                        setData(jobject.optString("time"),jobject.optString("HR"),Class_name);
-                    }
-                } catch (JSONException e){
-                    e.printStackTrace();
-                }
-
-
-            }
-        }
-
-    }
-
 }
-
 
