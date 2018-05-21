@@ -415,6 +415,10 @@ public class HistoryActivity extends AppCompatActivity {
                     class_name = new ArrayList<>();
                     count = new ArrayList<>();
                     JSONArray jarray = new JSONArray(result);
+                    if(jarray.length()==0){
+                        Toast.makeText(getApplicationContext(), "데이터가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     for(int i=jarray.length()-1; i>=0; i--){
                         JSONObject json_Object = jarray.getJSONObject(i);
                         if(json_Object.optString("class").equals("0"))class_name.add("정지");
