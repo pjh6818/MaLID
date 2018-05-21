@@ -71,7 +71,7 @@ public class HistoryActivity extends AppCompatActivity {
     historyitemadapter realadapter;
     LinearLayoutManager realmanager;
     int insertindex=-1;
-    Button searchbutton;
+    Button searchbutton,searchbuttonweekly;
     Button allbutton,stopbutton,walkbutton,runbutton;
     int whathrwant=-1;
     public boolean running = false;
@@ -127,6 +127,14 @@ public class HistoryActivity extends AppCompatActivity {
                 one=(TextView)findViewById(R.id.dailypiegraphnotify);
                 one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
+            }
+        });
+
+        searchbuttonweekly = findViewById(R.id.searchbuttonweekly);
+        searchbuttonweekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
             }
         });
 
@@ -291,7 +299,7 @@ public class HistoryActivity extends AppCompatActivity {
         String str2;
         hr = new ArrayList();
         int t, testtest;
-        for (int i = jarray.length() - 1; i >= 0; i--) {
+        for (int i = 0; i <= jarray.length() - 1; i++) {
             try {
                 jsonObject = jarray.getJSONObject(i);
             } catch (JSONException e) {
@@ -419,13 +427,13 @@ public class HistoryActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "데이터가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    for(int i=jarray.length()-1; i>=0; i--){
+                    for(int i= 0; i<=jarray.length()-1; i++){
                         JSONObject json_Object = jarray.getJSONObject(i);
                         if(json_Object.optString("class").equals("0"))class_name.add("정지");
                         else if(json_Object.optString("class").equals("1"))class_name.add("걷기");
                         else if(json_Object.optString("class").equals("2"))class_name.add("달리기");
                         else if(json_Object.optString("class").equals("3"))class_name.add("아령");
-                        count.add(json_Object.optInt("count"));
+                        count.add(Integer.parseInt(json_Object.optString("class")),json_Object.optInt("count"));
                         sum += json_Object.optInt("count");
                     }
                     result = result.substring(result.indexOf("]")+1);
