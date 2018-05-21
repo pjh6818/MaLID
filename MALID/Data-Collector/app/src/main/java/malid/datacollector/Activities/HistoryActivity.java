@@ -125,8 +125,8 @@ public class HistoryActivity extends AppCompatActivity {
                 TextView one = (TextView)findViewById(R.id.dailyheartgraphnotify);
                 one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
                 one=(TextView)findViewById(R.id.dailypiegraphnotify);
-                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
+                one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + "\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
             }
         });
 
