@@ -58,7 +58,7 @@ public class HistoryActivity extends AppCompatActivity {
     TabHost tabHost1;
     TabHost.TabSpec ts1, ts2, ts3;
     ArrayList<String> class_name;
-    ArrayList<Integer> count, hr;
+    ArrayList<Integer> count, hr, hrstop, hrwalk, hrrun;
 
     String Date = null;
     PieChart pieChart;
@@ -72,12 +72,16 @@ public class HistoryActivity extends AppCompatActivity {
     LinearLayoutManager realmanager;
     int insertindex=-1;
     Button searchbutton;
+    Button allbutton,stopbutton,walkbutton,runbutton;
+    int whathrwant=-1;
     public boolean running = false;
     int time=0;
     int ccount=99999999;
     DatePicker mDate;
     TextView forsetmessage;
     int maxx=0,minn=1000,averagee=0,counttt=0;
+    JSONObject globaljsonobject;
+    JSONArray globaljsonarray;
     ////////////////////////////////
 
     @Override
@@ -123,6 +127,55 @@ public class HistoryActivity extends AppCompatActivity {
                 one=(TextView)findViewById(R.id.dailypiegraphnotify);
                 one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
+            }
+        });
+
+        allbutton = findViewById(R.id.allhrbutton);
+        stopbutton = findViewById(R.id.stophrbutton);
+        walkbutton = findViewById(R.id.walkhrbutton);
+        runbutton = findViewById(R.id.runhrbutton);
+        allbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whathrwant=-1;
+                allbutton.setBackground(getDrawable(R.drawable.buttonbgred));
+                stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                make_chart_for_hr(globaljsonobject,globaljsonarray);
+            }
+        });
+        stopbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whathrwant=0;
+                allbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                stopbutton.setBackground(getDrawable(R.drawable.buttonbgred));
+                walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                make_chart_for_hr(globaljsonobject,globaljsonarray);
+            }
+        });
+        walkbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whathrwant=1;
+                allbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                walkbutton.setBackground(getDrawable(R.drawable.buttonbgred));
+                runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                make_chart_for_hr(globaljsonobject,globaljsonarray);
+            }
+        });
+        runbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whathrwant=2;
+                allbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                runbutton.setBackground(getDrawable(R.drawable.buttonbgred));
+                make_chart_for_hr(globaljsonobject,globaljsonarray);
             }
         });
 
@@ -230,6 +283,68 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
+    void make_chart_for_hr(JSONObject jsonObject, JSONArray jarray) {
+        globaljsonobject = jsonObject;
+        globaljsonarray = jarray;
+        String str;
+        String str2;
+        hr = new ArrayList();
+        int t, testtest;
+        for (int i = jarray.length() - 1; i >= 0; i--) {
+            try {
+                jsonObject = jarray.getJSONObject(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            str = jsonObject.optString("cclass");
+            str2 = jsonObject.optString("hhr");
+            Log.v("temp", Integer.toString(str2.length()));
+            Log.v("str", str);
+            Log.v("str2", str2);
+            t = Integer.parseInt(str2);
+            testtest = Integer.parseInt(str);
+            if (testtest == 0) {
+                Log.v("strr", "Str==0 success");
+                if (whathrwant == -1 || whathrwant == 0) {
+                    hr.add(t);
+                    if (maxx < t) maxx = t;
+                    if (minn > t) minn = t;
+                    averagee = averagee + t;
+                    counttt += 1;
+                }
+            } else if (testtest == 1) {
+                if (whathrwant == -1 || whathrwant == 1) {
+                    hr.add(t);
+                    if (maxx < t) maxx = t;
+                    if (minn > t) minn = t;
+                    averagee = averagee + t;
+                    counttt += 1;
+                }
+            } else if (testtest == 2) {
+                if (whathrwant == -1 || whathrwant == 2) {
+                    hr.add(t);
+                    if (maxx < t) maxx = t;
+                    if (minn > t) minn = t;
+                    averagee = averagee + t;
+                    counttt += 1;
+                }
+            }
+        }
+        hrChart = (LineChart) findViewById(R.id.hrchart);
+
+        ArrayList<Entry> entries = new ArrayList<>();
+        for(int i = 0;i<hr.size();i++) {
+            entries.add(new Entry(i, hr.get(i)));
+        }
+
+        LineDataSet dataset = new LineDataSet(entries, "심박수");
+        LineData hrdata = new LineData(dataset);
+        dataset.setDrawCircles(false);
+        dataset.setColor(Color.RED);
+        hrChart.setData(hrdata);
+        hrChart.animateY(5000);
+    }
+
     public class historyTask extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -306,29 +421,17 @@ public class HistoryActivity extends AppCompatActivity {
                     }
                     result = result.substring(result.indexOf("]")+1);
                     jarray = new JSONArray(result);
-                    JSONObject jsonObject = jarray.getJSONObject(0);
-                    String str = jsonObject.optString("HR");
-                    hr = new ArrayList();
-                    String temp;
-                    int t;
-                    while(str.contains(",")) {
-                        temp = str.substring(0, str.indexOf(", "));
-                        str = str.substring(str.indexOf(", ")+2);
-                        Log.v("temp", Integer.toString(temp.length()));
-                        Log.v("str", str);
-                        t=Integer.parseInt(temp);
-                        hr.add(t);
-                        if(maxx<t) maxx= t;
-                        if(minn>t) minn= t;
-                        averagee=averagee+t;
-                        counttt+=1;
-                    }
-                } catch (JSONException e){
+
+                    JSONObject jsonObject=null;
+                    make_chart_for_hr(jsonObject,jarray);
+
+                    } catch (JSONException e){
                     e.printStackTrace();
                 }
                 make_Chart((PieChart) findViewById(R.id.piechart),(LineChart) findViewById(R.id.hrchart));
                 TextView yes = findViewById(R.id.allexercisecounttextview);
-                yes.setText("정지 : " + count.get(0) + "회 걷기 : " + count.get(1) + "회 달리기 : " + count.get(2) + "회");
+                String temptemp = "정지 : " + count.get(0) + "회 걷기 : " + count.get(1) + "회 달리기 : " + count.get(2) + "회";
+                yes.setText(temptemp);
                 yes=findViewById(R.id.allexercisehearttextview);
                 averagee/=counttt;
                 yes.setText("최고 심박수 : " + maxx + " 최저 심박수 : " + minn + " 평균 심박수 : " + averagee);

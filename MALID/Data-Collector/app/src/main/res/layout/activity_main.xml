@@ -15,42 +15,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonbg"
-            android:orientation="vertical"
+            android:layout_marginBottom="5dp"
             android:layout_marginEnd="7dp"
             android:layout_marginStart="7dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:background="@drawable/buttonbg"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/okok"
-                android:background="@drawable/buttonbgblack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginBottom="1px"
+
+                android:background="@drawable/buttonbgblack"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="SENSORS"
                     android:gravity="center"
+                    android:text="SENSORS"
                     android:textColor="@color/White"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="7dp"
                 android:layout_marginStart="7dp"
                 android:orientation="vertical"
                 android:padding="5dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -81,30 +82,34 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.9" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.1"
-                        android:src="@drawable/heart"/>
-                    <TextView
-                        android:id="@+id/txt_heart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.4"
-                        android:textSize="30dp"
-                        android:text="미측정"/>
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_weight="0.1"
-                        android:src="@drawable/timer"/>
+                        android:src="@drawable/heart" />
+
+                    <TextView
+                        android:id="@+id/txt_heart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.4"
+                        android:text="미측정"
+                        android:textSize="30dp" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:src="@drawable/timer" />
+
                     <TextView
                         android:id="@+id/txtTimer"
                         android:layout_width="50dp"
@@ -116,11 +121,12 @@
 
 
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/accelview"
                     android:layout_width="500dp"
                     android:layout_height="20dp"
-                    android:text="가속도센서 결과창"/>
+                    android:text="가속도센서 결과창" />
 
             </LinearLayout>
         </LinearLayout>
@@ -136,16 +142,16 @@
             android:orientation="vertical">
 
 
-
             <Button
                 android:id="@+id/btnServer"
-                android:background="@drawable/buttonstate"
-                android:textColor="@color/Red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="측정 시작" />
+                android:background="@drawable/buttonstate"
+                android:text="측정 시작"
+                android:textColor="@color/Red" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -159,67 +165,72 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="top"
                 android:background="@drawable/buttonbgblack"
-                android:paddingTop="10dp"
+                android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_gravity="top"
-                android:gravity="center"
-                android:textStyle="bold"
+                android:paddingTop="10dp"
+                android:text="HISTORY"
                 android:textColor="@color/White"
-                android:text = "HISTORY"/>
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
                     android:layout_weight="15"
                     android:background="@drawable/buttonbgnocorner"
-                    android:paddingTop="10dp"
+                    android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:text="idx"/>
+                    android:paddingTop="10dp"
+                    android:text="idx" />
+
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
                     android:layout_weight="40"
                     android:background="@drawable/buttonbgnocorner"
-                    android:paddingTop="10dp"
+                    android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:text = "측정시간"/>
+                    android:paddingTop="10dp"
+                    android:text="측정시간" />
+
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
                     android:layout_weight="20"
                     android:background="@drawable/buttonbgnocorner"
-                    android:paddingTop="10dp"
+                    android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:text = "심박수"/>
+                    android:paddingTop="10dp"
+                    android:text="심박수" />
+
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
                     android:layout_weight="25"
                     android:background="@drawable/buttonbgnocorner"
-                    android:paddingTop="10dp"
+                    android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:text = "운동 종류"/>
+                    android:paddingTop="10dp"
+                    android:text="운동 종류" />
 
             </LinearLayout>
 
@@ -234,13 +245,14 @@
                 <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="현재 서버에서 데이터를 처리 중입니다. \n 측정을 완료 한 후 터치해주세요"/>
+                    android:text="현재 서버에서 데이터를 처리 중입니다. \n 측정을 완료 한 후 터치해주세요" />
 
             </LinearLayout>
 
@@ -248,71 +260,74 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_marginBottom="5dp"></android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 
 
-
-
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:background="@drawable/buttonbg"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:orientation="vertical"
+            android:layout_gravity="right"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_gravity="right">
+            android:background="@drawable/buttonbg"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="INFORMATION"
                 android:background="@drawable/buttonbgblack"
-                android:textStyle="bold"
-                android:textColor="@color/White"
                 android:gravity="center"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:text="INFORMATION"
+                android:textColor="@color/White"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="right"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_gravity="right"
                 android:padding="3dp">
+
                 <ScrollView
+                    android:id="@+id/serverscroll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:id="@+id/serverscroll">
+                    android:layout_gravity="bottom">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text = "서버 메시지 : "/>
+                                android:text="서버 메시지 : " />
+
                             <TextView
                                 android:id="@+id/serverView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/Red"
-                                android:text="현재 서버가 데이터를 수신하지 않고 있습니다."/>
+                                android:text="현재 서버가 데이터를 수신하지 않고 있습니다."
+                                android:textColor="@color/Red" />
                         </LinearLayout>
+
                         <TextView
                             android:id="@+id/txtByte"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="측정 전 정보 : \n측정 후 정보 : \n시간 : \n심박수 : "/>
+                            android:text="측정 전 정보 : \n측정 후 정보 : \n시간 : \n심박수 : " />
 
 
                     </LinearLayout>
@@ -321,14 +336,8 @@
             </LinearLayout>
 
 
-
-
-
         </LinearLayout>
     </LinearLayout>
-
-
-
 
 
 </android.support.constraint.ConstraintLayout>
