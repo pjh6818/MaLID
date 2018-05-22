@@ -73,7 +73,7 @@ public class HistoryActivity extends AppCompatActivity {
     LinearLayoutManager realmanager,realmanagerweekly;
     int insertindex=-1;
     Button searchbutton,searchbuttonweekly;
-    Button allbutton,stopbutton,walkbutton,runbutton;
+    Button allbutton,stopbutton,walkbutton,runbutton,armbutton;
     int whathrwant=-1;
     public boolean running = false;
     int time=0;
@@ -98,9 +98,14 @@ public class HistoryActivity extends AppCompatActivity {
 
         PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
         view123.setVisibility(View.INVISIBLE);
+        view123 = (PieChart)findViewById(R.id.piechartweekly);
+        view123.setVisibility(View.INVISIBLE);
         LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
         view456.setVisibility(View.INVISIBLE);
+        view456 = (LineChart)findViewById(R.id.hrchartweekly);
+        view456.setVisibility(View.INVISIBLE);
         albumList=new ArrayList<historyitem>();
+        albumListWeekly = new ArrayList<historyitem>();
         initLayout();
         mDateBefore = (DatePicker)findViewById(R.id.datepickweeklystart);
         mDate = (DatePicker)findViewById(R.id.datepickweeklyend);
@@ -151,19 +156,24 @@ public class HistoryActivity extends AppCompatActivity {
                 view456.setVisibility(View.INVISIBLE);
                 albumListWeekly.clear();
                 insertindex=-1;
+                beforeDate = String.valueOf(mDateBefore.getYear())+String.valueOf(mDateBefore.getMonth()+1)+String.valueOf(mDateBefore.getDayOfMonth());
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
                 forsetmessage= findViewById(R.id.progrssbarmessageinweeklyhistoryview);
-                forsetmessage.setText("서버로부터\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
-                        + "일\n에 대한 데이터를 요청하고 있습니다.\n잠시만 기다려 주세요");
+                forsetmessage.setText("서버로부터\n" + mDateBefore.getYear() + (mDate.getMonth()+1) + mDate.getDayOfMonth()
+                        + "로 부터 \n" + mDate.getYear() + (mDate.getMonth()+1) + mDate.getDayOfMonth()  +"에 대한 데이터를 요청하고 있습니다." +
+                        "\n잠시만 기다려 주세요");
                 forsetmessage=findViewById(R.id.weeklyhistorydateshow);
-                forsetmessage.setText("측정 날짜 : " + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
-                        + "일");
+                forsetmessage.setText("측정 날짜 : "  + mDateBefore.getYear() + (mDateBefore.getMonth()+1) + mDateBefore.getDayOfMonth()
+                        + "~" + mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
                 TextView one = (TextView)findViewById(R.id.weeklyheartgraphnotify);
-                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                String temp = String.valueOf(mDateBefore.getYear()) + String.valueOf((mDateBefore.getMonth()+1)) + String.valueOf(mDateBefore.getDayOfMonth());
+                one.setText( temp  + "~" +mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
                 one=(TextView)findViewById(R.id.weeklypiegraphnotify);
-                one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + "\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + " 아령 : " + count.get(3) + "\n"
+                        + mDateBefore.getYear() + (mDateBefore.getMonth()+1) + mDateBefore.getDayOfMonth()
+                        + "~" +mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
 
-                beforeDate = String.valueOf(mDateBefore.getYear())+String.valueOf(mDateBefore.getMonth()+1)+String.valueOf(mDateBefore.getDayOfMonth());
+
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
             }
@@ -173,6 +183,7 @@ public class HistoryActivity extends AppCompatActivity {
         stopbutton = findViewById(R.id.stophrbutton);
         walkbutton = findViewById(R.id.walkhrbutton);
         runbutton = findViewById(R.id.runhrbutton);
+        armbutton = findViewById(R.id.armhrbutton);
         allbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +192,7 @@ public class HistoryActivity extends AppCompatActivity {
                 stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                armbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 make_chart_for_hr(globaljsonobject,globaljsonarray);
             }
         });
@@ -192,6 +204,7 @@ public class HistoryActivity extends AppCompatActivity {
                 stopbutton.setBackground(getDrawable(R.drawable.buttonbgred));
                 walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                armbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 make_chart_for_hr(globaljsonobject,globaljsonarray);
             }
         });
@@ -203,6 +216,7 @@ public class HistoryActivity extends AppCompatActivity {
                 stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 walkbutton.setBackground(getDrawable(R.drawable.buttonbgred));
                 runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                armbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 make_chart_for_hr(globaljsonobject,globaljsonarray);
             }
         });
@@ -214,6 +228,19 @@ public class HistoryActivity extends AppCompatActivity {
                 stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
                 runbutton.setBackground(getDrawable(R.drawable.buttonbgred));
+                armbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                make_chart_for_hr(globaljsonobject,globaljsonarray);
+            }
+        });
+        armbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whathrwant=3;
+                allbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                stopbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                walkbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                runbutton.setBackground(getDrawable(R.drawable.buttonbg));
+                armbutton.setBackground(getDrawable(R.drawable.buttonbgred));
                 make_chart_for_hr(globaljsonobject,globaljsonarray);
             }
         });
@@ -249,7 +276,8 @@ public class HistoryActivity extends AppCompatActivity {
         album.setClasss(exercise);
         album.setHeartrate(hr);
         insertindex++;
-        albumList.add(insertindex,album);
+        if(weeklysearchon==0)albumList.add(insertindex,album);
+        else albumListWeekly.add(insertindex,album);
             /*new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -267,15 +295,15 @@ public class HistoryActivity extends AppCompatActivity {
         tabHost1.setup();
         ts3 = tabHost1.newTabSpec("all") ;
         ts3.setContent(R.id.all) ;
-        ts3.setIndicator("전체") ;
+        ts3.setIndicator("전체기록") ;
         tabHost1.addTab(ts3) ;
         ts1 = tabHost1.newTabSpec("daily") ;
         ts1.setContent(R.id.daily) ;
-        ts1.setIndicator("일일") ;
+        ts1.setIndicator("일간기록") ;
         tabHost1.addTab(ts1) ;
         ts2 = tabHost1.newTabSpec("weekly") ;
         ts2.setContent(R.id.weekly) ;
-        ts2.setIndicator("주간") ;
+        ts2.setIndicator("기간기록") ;
         tabHost1.addTab(ts2) ;
 
     }
@@ -291,7 +319,7 @@ public class HistoryActivity extends AppCompatActivity {
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setTransparentCircleRadius(61f);
         pieChart.setCenterText("운동");
-        if(View == findViewById(R.id.piechartdaily) ) {
+        if(View == findViewById(R.id.piechartdaily) || View==findViewById(R.id.piechartweekly)) {
             pieChart.setCenterTextSize(10f);
             pieChart.setEntryLabelTextSize(10f);
         }
@@ -371,6 +399,14 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             } else if (testtest == 2) {
                 if (whathrwant == -1 || whathrwant == 2) {
+                    hr.add(t);
+                    if (maxx < t) maxx = t;
+                    if (minn > t) minn = t;
+                    averagee = averagee + t;
+                    counttt += 1;
+                }
+            } else if (testtest==3) {
+                if (whathrwant == -1 || whathrwant == 3) {
                     hr.add(t);
                     if (maxx < t) maxx = t;
                     if (minn > t) minn = t;
@@ -487,7 +523,7 @@ public class HistoryActivity extends AppCompatActivity {
                 }
                 make_Chart((PieChart) findViewById(R.id.piechart),(LineChart) findViewById(R.id.hrchart));
                 TextView yes = findViewById(R.id.allexercisecounttextview);
-                String temptemp = "정지 : " + count.get(0) + "회 걷기 : " + count.get(1) + "회 달리기 : " + count.get(2) + "회";
+                String temptemp = "정지 : " + count.get(0) + "회 걷기 : " + count.get(1) + "회 달리기 : " + count.get(2) + "회 아령 : " + count.get(3) ;
                 yes.setText(temptemp);
                 yes=findViewById(R.id.allexercisehearttextview);
                 averagee/=counttt;
@@ -583,7 +619,8 @@ public class HistoryActivity extends AppCompatActivity {
                     class_name.add("정지");
                     class_name.add("걷기");
                     class_name.add("달리기");
-                    int pausecount=0,walkcount=0,runcount=0;
+                    class_name.add("아령");
+                    int pausecount=0,walkcount=0,runcount=0,armcount=0;
                     count = new ArrayList<>();
                     hr = new ArrayList();
                     sum=0;
@@ -598,6 +635,7 @@ public class HistoryActivity extends AppCompatActivity {
                             if(jobject.optString("class").equals("0")) {Class_name = "정지";++pausecount; }
                             else if(jobject.optString("class").equals("1")) {Class_name = "걷기";++walkcount;}
                             else if(jobject.optString("class").equals("2")) {Class_name = "달리기";++runcount;}
+                            else if(jobject.optString("class").equals("3")) {Class_name = "아령";++armcount;}
                             setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
                             sum += 1;
                             hr.add(Integer.parseInt(jobject.optString("HR")));
@@ -605,6 +643,7 @@ public class HistoryActivity extends AppCompatActivity {
                         count.add(0,pausecount);
                         count.add(1,walkcount);
                         count.add(2,runcount);
+                        count.add(3,armcount);
                         if(weeklysearchon==0) {
                             make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
                             PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);

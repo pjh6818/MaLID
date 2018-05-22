@@ -823,6 +823,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         if(jobject.optString("class").equals("0")) Class_name = "정지";
                         else if(jobject.optString("class").equals("1")) Class_name = "걷기";
                         else if(jobject.optString("class").equals("2")) Class_name = "달리기";
+                        else if(jobject.optString("class").equals("3")) Class_name = "아령";
                         setData(String.valueOf(jarray.length()-i),jobject.optString("time"),jobject.optString("HR"),Class_name);
                     }
                     LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarlayout);
