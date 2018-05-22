@@ -61,15 +61,16 @@ public class HistoryActivity extends AppCompatActivity {
     ArrayList<Integer> count, hr, hrstop, hrwalk, hrrun;
 
     String Date = null;
+    String beforeDate = null;
     PieChart pieChart;
     LineChart hrChart;
     int sum;
 
     ///////////////
-    private RecyclerView lecyclerView;
-    List<historyitem> albumList;
-    historyitemadapter realadapter;
-    LinearLayoutManager realmanager;
+    private RecyclerView lecyclerView,lecyclerviewweekly;
+    List<historyitem> albumList,albumListWeekly;
+    historyitemadapter realadapter,realadapterweekly;
+    LinearLayoutManager realmanager,realmanagerweekly;
     int insertindex=-1;
     Button searchbutton,searchbuttonweekly;
     Button allbutton,stopbutton,walkbutton,runbutton;
@@ -77,11 +78,12 @@ public class HistoryActivity extends AppCompatActivity {
     public boolean running = false;
     int time=0;
     int ccount=99999999;
-    DatePicker mDate;
+    DatePicker mDate,mDateBefore;
     TextView forsetmessage;
     int maxx=0,minn=1000,averagee=0,counttt=0;
     JSONObject globaljsonobject;
     JSONArray globaljsonarray;
+    int weeklysearchon=0;
     ////////////////////////////////
 
     @Override
@@ -100,11 +102,13 @@ public class HistoryActivity extends AppCompatActivity {
         view456.setVisibility(View.INVISIBLE);
         albumList=new ArrayList<historyitem>();
         initLayout();
-        mDate = (DatePicker)findViewById(R.id.datepickdaily);
+        mDateBefore = (DatePicker)findViewById(R.id.datepickweeklystart);
+        mDate = (DatePicker)findViewById(R.id.datepickweeklyend);
         searchbutton=findViewById(R.id.searchbutton);
         searchbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                weeklysearchon=0;
                 LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
                 RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
                 viewview.setVisibility(viewview.VISIBLE);
@@ -115,6 +119,7 @@ public class HistoryActivity extends AppCompatActivity {
                 view456.setVisibility(View.INVISIBLE);
                 albumList.clear();
                 insertindex=-1;
+                mDate = (DatePicker)findViewById(R.id.datepickdaily);
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
                 forsetmessage= findViewById(R.id.progrssbarmessageinhistoryview);
                 forsetmessage.setText("서버로부터\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
@@ -134,7 +139,33 @@ public class HistoryActivity extends AppCompatActivity {
         searchbuttonweekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                weeklysearchon=1;
 
+                LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinweeklyHistoryActivity);
+                RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycleinweekly);
+                viewview.setVisibility(viewview.VISIBLE);
+                viewviewview.setVisibility(viewviewview.GONE);
+                PieChart view123 = (PieChart)findViewById(R.id.piechartweekly);
+                view123.setVisibility(View.INVISIBLE);
+                LineChart view456 = (LineChart)findViewById(R.id.hrchartweekly);
+                view456.setVisibility(View.INVISIBLE);
+                albumListWeekly.clear();
+                insertindex=-1;
+                Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
+                forsetmessage= findViewById(R.id.progrssbarmessageinweeklyhistoryview);
+                forsetmessage.setText("서버로부터\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
+                        + "일\n에 대한 데이터를 요청하고 있습니다.\n잠시만 기다려 주세요");
+                forsetmessage=findViewById(R.id.weeklyhistorydateshow);
+                forsetmessage.setText("측정 날짜 : " + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
+                        + "일");
+                TextView one = (TextView)findViewById(R.id.weeklyheartgraphnotify);
+                one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                one=(TextView)findViewById(R.id.weeklypiegraphnotify);
+                one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + "\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+
+                beforeDate = String.valueOf(mDateBefore.getYear())+String.valueOf(mDateBefore.getMonth()+1)+String.valueOf(mDateBefore.getDayOfMonth());
+                Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
+                new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
             }
         });
 
@@ -189,7 +220,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
     public void initLayout(){
-
         lecyclerView = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
         lecyclerView.setAdapter(realadapter=new historyitemadapter(albumList,R.layout.historyitem));
         realmanager = new LinearLayoutManager(this);
@@ -199,6 +229,16 @@ public class HistoryActivity extends AppCompatActivity {
         lecyclerView.addItemDecoration(dividerItemDecoration);
         lecyclerView.setItemAnimator(new DefaultItemAnimator());
         realadapter.notifyDataSetChanged();
+
+        lecyclerviewweekly = (RecyclerView)findViewById(R.id.HistoryActivityRecycleinweekly);
+        lecyclerviewweekly.setAdapter(realadapterweekly=new historyitemadapter(albumListWeekly,R.layout.historyitem));
+        realmanagerweekly = new LinearLayoutManager(this);
+        lecyclerviewweekly.setLayoutManager(realmanagerweekly);
+        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(lecyclerviewweekly.getContext(),
+                realmanagerweekly.getOrientation());
+        lecyclerviewweekly.addItemDecoration(dividerItemDecoration1);
+        lecyclerviewweekly.setItemAnimator(new DefaultItemAnimator());
+        realadapterweekly.notifyDataSetChanged();
     }
 
     private void setData(String idx,String time, String hr, String exercise){
@@ -464,6 +504,8 @@ public class HistoryActivity extends AppCompatActivity {
                 jsonObject.accumulate("ID", ID);
                 jsonObject.accumulate("count", ccount);
                 jsonObject.accumulate("Date",Date);
+                if(weeklysearchon==1) jsonObject.accumulate("DateBefore",beforeDate);
+                else jsonObject.accumulate("DateBefore",Date);
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
@@ -563,18 +605,41 @@ public class HistoryActivity extends AppCompatActivity {
                         count.add(0,pausecount);
                         count.add(1,walkcount);
                         count.add(2,runcount);
-                        make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
-                        PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
-                        view123.setVisibility(View.VISIBLE);
-                        LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
-                        view456.setVisibility(View.VISIBLE);
+                        if(weeklysearchon==0) {
+                            make_Chart((PieChart) findViewById(R.id.piechartdaily), (LineChart) findViewById(R.id.hrchartdaily));
+                            PieChart view123 = (PieChart)findViewById(R.id.piechartdaily);
+                            view123.setVisibility(View.VISIBLE);
+                            LineChart view456 = (LineChart)findViewById(R.id.hrchartdaily);
+                            view456.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            make_Chart((PieChart) findViewById(R.id.piechartweekly), (LineChart) findViewById(R.id.hrchartweekly));
+                            PieChart view123 = (PieChart)findViewById(R.id.piechartweekly);
+                            view123.setVisibility(View.VISIBLE);
+                            LineChart view456 = (LineChart)findViewById(R.id.hrchartweekly);
+                            view456.setVisibility(View.VISIBLE);
+                        }
+
                     }
-                    LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
-                    RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
-                    viewview.setVisibility(viewview.GONE);
-                    viewviewview.setVisibility(viewviewview.VISIBLE);
-                    realadapter.notifyDataSetChanged();
-                    viewviewview.postInvalidate();
+                    LinearLayout viewview=null;
+                    RecyclerView viewviewview=null;
+                    if(weeklysearchon==0){
+                        viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
+                        viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
+                        viewview.setVisibility(viewview.GONE);
+                        viewviewview.setVisibility(viewviewview.VISIBLE);
+                        realadapter.notifyDataSetChanged();
+                        viewviewview.postInvalidate();
+                    }
+                    else
+                    {
+                        viewview = (LinearLayout)findViewById(R.id.progrssbarinweeklyHistoryActivity);
+                        viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycleinweekly);
+                        viewview.setVisibility(viewview.GONE);
+                        viewviewview.setVisibility(viewviewview.VISIBLE);
+                        realadapterweekly.notifyDataSetChanged();
+                        viewviewview.postInvalidate();
+                    }
 
                 } catch (JSONException e){
                     e.printStackTrace();

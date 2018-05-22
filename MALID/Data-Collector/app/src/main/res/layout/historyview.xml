@@ -31,236 +31,287 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp">
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                     <LinearLayout
                         android:id="@+id/weekly"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="5dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/buttonbg"
-                            android:orientation="vertical"
-                            android:layout_marginBottom="5dp">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:background="@drawable/buttonbgblack"
-                                android:textColor="@color/White"
-                                android:textStyle="bold"
-                                android:gravity="center"
-
-                                android:text="날짜 선택"/>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/buttonbg"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:background="@drawable/buttonbgblack"
+                                    android:gravity="center"
+                                    android:text="날짜 선택"
+                                    android:textColor="@color/White"
+
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:text="시작 날짜" />
+
+                                        <DatePicker
+                                            android:id="@+id/datepickweeklystart"
+                                            android:layout_width="300dp"
+                                            android:layout_height="80dp"
+                                            android:calendarViewShown="false"
+                                            android:datePickerMode="spinner"
+                                            android:gravity="center"
+                                            android:spinnersShown="true"></DatePicker>
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:text="종료 날짜" />
+
+                                        <DatePicker
+                                            android:id="@+id/datepickweeklyend"
+                                            android:layout_width="300dp"
+                                            android:layout_height="80dp"
+                                            android:calendarViewShown="false"
+                                            android:datePickerMode="spinner"
+                                            android:gravity="center"
+                                            android:spinnersShown="true"></DatePicker>
+
+                                    </LinearLayout>
+
+                                    <Button
+                                        android:id="@+id/searchbuttonweekly"
+                                        android:layout_width="50dp"
+                                        android:layout_height="40dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="20dp"
+                                        android:background="@drawable/buttonstate"
+                                        android:gravity="center"
+                                        android:text="조회" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="230dp"
+                                android:layout_marginBottom="5dp"
                                 android:orientation="horizontal">
 
-                                <DatePicker
-                                    android:id="@+id/datepickweekly"
-                                    android:gravity="center"
-                                    android:layout_width="300dp"
-                                    android:layout_height="80dp"
-                                    android:calendarViewShown="false"
-                                    android:datePickerMode="spinner"
-                                    android:spinnersShown="true"></DatePicker>
-                                <Button
-                                    android:id="@+id/searchbuttonweekly"
-                                    android:layout_width="50dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:background="@drawable/buttonstate"
-                                    android:text="조회"/>
-
-                            </LinearLayout>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="5dp"
-                            android:layout_height="230dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="230dp"
-                                android:layout_weight="50"
-                                android:background="@drawable/buttonbg"
-                                android:orientation="vertical"
-                                android:weightSum="100">
-
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="30dp"
-                                    android:background="@drawable/buttonbgblack"
-                                    android:gravity="center"
-                                    android:text="종류별 통계"
-                                    android:textColor="@color/White"
-                                    android:textStyle="bold" />
+                                    android:layout_height="230dp"
+                                    android:layout_weight="50"
+                                    android:background="@drawable/buttonbg"
+                                    android:orientation="vertical"
+                                    android:weightSum="100">
 
-                                <com.github.mikephil.charting.charts.PieChart
-                                    android:id="@+id/piechartweekly"
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:background="@drawable/buttonbgblack"
+                                        android:gravity="center"
+                                        android:text="종류별 통계"
+                                        android:textColor="@color/White"
+                                        android:textStyle="bold" />
+
+                                    <com.github.mikephil.charting.charts.PieChart
+                                        android:id="@+id/piechartweekly"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_weight="90">
+
+                                    </com.github.mikephil.charting.charts.PieChart>
+
+                                    <TextView
+                                        android:id="@+id/weeklypiegraphnotify"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="5dp"
+                                        android:layout_weight="10"
+                                        android:gravity="center"
+                                        android:text="데이터 조회시 갱신됩니다."
+                                        android:textSize="13dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="90">
-
-                                </com.github.mikephil.charting.charts.PieChart>
-
-                                <TextView
-                                    android:id="@+id/weeklypiegraphnotify"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="5dp"
-                                    android:layout_weight="10"
-                                    android:gravity="center"
-                                    android:text="데이터 조회시 갱신됩니다."
-                                    android:textSize="13dp" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="230dp"
-                                android:layout_weight="40"
-                                android:background="@drawable/buttonbg"
-                                android:orientation="vertical"
-                                android:layout_marginLeft="5dp"
-                                android:weightSum="100">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="30dp"
-                                    android:background="@drawable/buttonbgblack"
-                                    android:gravity="center"
-                                    android:text="심박수 통계"
-                                    android:textColor="@color/White"
-                                    android:textStyle="bold" />
-
-                                <com.github.mikephil.charting.charts.LineChart
-                                    android:id="@+id/hrchartweekly"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="180dp"
-                                    android:layout_weight="80">
-
-                                </com.github.mikephil.charting.charts.LineChart>
-
-                                <TextView
-                                    android:id="@+id/weeklyheartgraphnotify"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:layout_weight="20"
-                                    android:gravity="center"
-                                    android:text="데이터 조회시 갱신됩니다."
-                                    android:textSize="13dp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/buttonbg"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/datetest2"
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:background="@drawable/buttonbgblack"
-                                android:textColor="@color/White"
-                                android:textStyle="bold"
-                                android:gravity="center"
-
-                                android:text="HISTORY"/>
-                            <TextView
-                                android:id="@+id/weeklyhistorydateshow"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textColor="@color/Dark"
-                                android:text="측정 날짜 : "/>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <TextView
-                                    android:layout_width="1dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="15"
-                                    android:background="@drawable/buttonbgnocorner"
-                                    android:paddingTop="10dp"
-                                    android:paddingBottom="10dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_gravity="top"
-                                    android:gravity="center"
-                                    android:text="idx"/>
-                                <TextView
-                                    android:layout_width="1dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="230dp"
+                                    android:layout_marginLeft="5dp"
                                     android:layout_weight="40"
-                                    android:background="@drawable/buttonbgnocorner"
-                                    android:paddingTop="10dp"
-                                    android:paddingBottom="10dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_gravity="top"
-                                    android:gravity="center"
-                                    android:text = "측정시간"/>
-                                <TextView
-                                    android:layout_width="1dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="20"
-                                    android:background="@drawable/buttonbgnocorner"
-                                    android:paddingTop="10dp"
-                                    android:paddingBottom="10dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_gravity="top"
-                                    android:gravity="center"
-                                    android:text = "심박수"/>
-                                <TextView
-                                    android:layout_width="1dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="25"
-                                    android:background="@drawable/buttonbgnocorner"
-                                    android:paddingTop="10dp"
-                                    android:paddingBottom="10dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:layout_gravity="top"
-                                    android:gravity="center"
-                                    android:text = "운동 종류"/>
+                                    android:background="@drawable/buttonbg"
+                                    android:orientation="vertical"
+                                    android:weightSum="100">
 
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:background="@drawable/buttonbgblack"
+                                        android:gravity="center"
+                                        android:text="심박수 통계"
+                                        android:textColor="@color/White"
+                                        android:textStyle="bold" />
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/hrchartweekly"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="180dp"
+                                        android:layout_weight="80">
+
+                                    </com.github.mikephil.charting.charts.LineChart>
+
+                                    <TextView
+                                        android:id="@+id/weeklyheartgraphnotify"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:layout_weight="20"
+                                        android:gravity="center"
+                                        android:text="데이터 조회시 갱신됩니다."
+                                        android:textSize="13dp" />
+                                </LinearLayout>
                             </LinearLayout>
+
                             <LinearLayout
-                                android:id="@+id/progrssbarinweeklyHistoryActivity"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
+                                android:layout_height="200dp"
+                                android:background="@drawable/buttonbg"
+                                android:orientation="vertical">
 
-                                <ProgressBar
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"/>
                                 <TextView
-                                    android:id="@+id/progrssbarmessageinweeklyhistoryview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
+                                    android:id="@+id/datetest2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:background="@drawable/buttonbgblack"
                                     android:gravity="center"
-                                    android:text="서버에서 데이터를 처리 중입니다."/>
+                                    android:text="HISTORY"
+                                    android:textColor="@color/White"
 
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/weeklyhistorydateshow"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="측정 날짜 : "
+                                    android:textColor="@color/Dark" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="top"
+                                        android:layout_weight="15"
+                                        android:background="@drawable/buttonbgnocorner"
+                                        android:gravity="center"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="10dp"
+                                        android:paddingRight="10dp"
+                                        android:paddingTop="10dp"
+                                        android:text="idx" />
+
+                                    <TextView
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="top"
+                                        android:layout_weight="40"
+                                        android:background="@drawable/buttonbgnocorner"
+                                        android:gravity="center"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="10dp"
+                                        android:paddingRight="10dp"
+                                        android:paddingTop="10dp"
+                                        android:text="측정시간" />
+
+                                    <TextView
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="top"
+                                        android:layout_weight="20"
+                                        android:background="@drawable/buttonbgnocorner"
+                                        android:gravity="center"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="10dp"
+                                        android:paddingRight="10dp"
+                                        android:paddingTop="10dp"
+                                        android:text="심박수" />
+
+                                    <TextView
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="top"
+                                        android:layout_weight="25"
+                                        android:background="@drawable/buttonbgnocorner"
+                                        android:gravity="center"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="10dp"
+                                        android:paddingRight="10dp"
+                                        android:paddingTop="10dp"
+                                        android:text="운동 종류" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/progrssbarinweeklyHistoryActivity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
+
+                                    <ProgressBar
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center" />
+
+                                    <TextView
+                                        android:id="@+id/progrssbarmessageinweeklyhistoryview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:text="서버에서 데이터를 처리 중입니다." />
+
+                                </LinearLayout>
+
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/HistoryActivityRecycleinweekly"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </android.support.v7.widget.RecyclerView>
                             </LinearLayout>
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/HistoryActivityRecycleinweekly"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
 
-                            </android.support.v7.widget.RecyclerView>
-                        </LinearLayout>
+
+
+
                     </LinearLayout>
+                </ScrollView>
                     <LinearLayout
                         android:id="@+id/all"
                         android:layout_width="match_parent"
