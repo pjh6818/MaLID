@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     HR_list.clear();
                     XYZ_list.clear();
                     txtByte.setText("측정 전 정보 : "+prev_step+"걸음수 "+prev_distance+"미터 "+prev_cal+"칼로리\n측정 후 정보 : " +curr_step+"걸음수 "
-                                    +curr_distance+"미터 "+curr_cal+"칼로리\n시간 : "+time+"초\n"+"심박수 : ");
+                                    +curr_distance+"미터 "+curr_cal+"칼로리\n");
                     //txt_heart.setText("심박수 : ");
                     txtTimer.setText("0");
 
@@ -365,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     void sendServer() {
         txtByte.setText("측정 전 정보 : "+prev_step+"걸음수 "+prev_distance+"미터 "+prev_cal+"칼로리\n측정 후 정보 : " +curr_step+"걸음수 "
-                +curr_distance+"미터 "+curr_cal+"칼로리\n시간 : "+time+"s\n"+"심박수 : "+HR_list.toString());
+                +curr_distance+"미터 "+curr_cal+"칼로리\n");
     }
     void getInformation() { // 걸음수, 거리, 칼로리 정보
         BluetoothGattCharacteristic bchar = bluetoothGatt.getService(CustomBluetoothProfile.Information.service)

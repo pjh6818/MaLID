@@ -327,7 +327,7 @@
                             android:id="@+id/txtByte"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="측정 전 정보 : \n측정 후 정보 : \n시간 : \n심박수 : " />
+                            android:text="측정 전 정보 : \n측정 후 정보 : " />
 
 
                     </LinearLayout>

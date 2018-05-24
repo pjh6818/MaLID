@@ -115,6 +115,7 @@ public class HistoryActivity extends AppCompatActivity {
         searchbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                lecyclerView.stopScroll();
                 weeklysearchon=0;
                 LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
                 RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
@@ -147,7 +148,7 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 weeklysearchon=1;
-
+                lecyclerviewweekly.stopScroll();
                 LinearLayout viewview = (LinearLayout)findViewById(R.id.progrssbarinweeklyHistoryActivity);
                 RecyclerView viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycleinweekly);
                 viewview.setVisibility(viewview.VISIBLE);
