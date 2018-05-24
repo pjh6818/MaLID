@@ -79,11 +79,13 @@ public class HistoryActivity extends AppCompatActivity {
     int time=0;
     int ccount=99999999;
     DatePicker mDate,mDateBefore;
-    TextView forsetmessage;
+    TextView forsetmessage,graphbox1,graphbox2;
     int maxx=0,minn=1000,averagee=0,counttt=0;
     JSONObject globaljsonobject;
     JSONArray globaljsonarray;
     int weeklysearchon=0;
+    TextView one;
+    int dataexist=0;
     ////////////////////////////////
 
     @Override
@@ -132,11 +134,11 @@ public class HistoryActivity extends AppCompatActivity {
                 forsetmessage=findViewById(R.id.dailyhistorydateshow);
                 forsetmessage.setText("측정 날짜 : " + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth()
                         + "일");
-                TextView one = (TextView)findViewById(R.id.dailyheartgraphnotify);
+                one = (TextView)findViewById(R.id.dailyheartgraphnotify);
                 one.setText(mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
-                one=(TextView)findViewById(R.id.dailypiegraphnotify);
+                //one=(TextView)findViewById(R.id.dailypiegraphnotify);
                 new recyclehistoryTask().execute("http://13.125.101.194:3000/historyview");
-                one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + "\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                //one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + " 아령 : " + count.get(3) + "\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
             }
         });
 
@@ -159,19 +161,14 @@ public class HistoryActivity extends AppCompatActivity {
                 beforeDate = String.valueOf(mDateBefore.getYear())+String.valueOf(mDateBefore.getMonth()+1)+String.valueOf(mDateBefore.getDayOfMonth());
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
                 forsetmessage= findViewById(R.id.progrssbarmessageinweeklyhistoryview);
-                forsetmessage.setText("서버로부터\n" + mDateBefore.getYear() + (mDate.getMonth()+1) + mDate.getDayOfMonth()
-                        + "로 부터 \n" + mDate.getYear() + (mDate.getMonth()+1) + mDate.getDayOfMonth()  +"에 대한 데이터를 요청하고 있습니다." +
+                forsetmessage.setText("서버로부터\n" + beforeDate  + "로 부터 \n" +Date +"에 대한 데이터를 요청하고 있습니다." +
                         "\n잠시만 기다려 주세요");
                 forsetmessage=findViewById(R.id.weeklyhistorydateshow);
                 forsetmessage.setText("측정 날짜 : "  + mDateBefore.getYear() + (mDateBefore.getMonth()+1) + mDateBefore.getDayOfMonth()
                         + "~" + mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
-                TextView one = (TextView)findViewById(R.id.weeklyheartgraphnotify);
+                one = (TextView)findViewById(R.id.weeklyheartgraphnotify);
                 String temp = String.valueOf(mDateBefore.getYear()) + String.valueOf((mDateBefore.getMonth()+1)) + String.valueOf(mDateBefore.getDayOfMonth());
                 one.setText( temp  + "~" +mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
-                one=(TextView)findViewById(R.id.weeklypiegraphnotify);
-                one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + " 아령 : " + count.get(3) + "\n"
-                        + mDateBefore.getYear() + (mDateBefore.getMonth()+1) + mDateBefore.getDayOfMonth()
-                        + "~" +mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
 
 
                 Date = String.valueOf(mDate.getYear()) +String.valueOf(mDate.getMonth()+1) + String.valueOf(mDate.getDayOfMonth());
@@ -245,6 +242,37 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
+        graphbox1= (TextView)findViewById(R.id.weeklygraphbox1);
+        graphbox2= (TextView)findViewById(R.id.weeklygraphbox2);
+
+        graphbox1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PieChart view456 = (PieChart) findViewById(R.id.piechartweekly);
+                if(view456.getVisibility()==View.GONE){
+                    view456.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    view456.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        graphbox2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LineChart view123 = (LineChart) findViewById(R.id.hrchartweekly);
+                if(view123.getVisibility()==View.VISIBLE)
+                {
+                    view123.setVisibility(View.GONE);
+                }
+                else
+                {
+                    view123.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
     public void initLayout(){
         lecyclerView = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
@@ -627,8 +655,10 @@ public class HistoryActivity extends AppCompatActivity {
                     JSONArray jarray = new JSONArray(result);
                     if(jarray.length()==0){
                         Toast.makeText(getApplicationContext(), "해당 날짜에 대한 데이터가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
+                        dataexist=0;
                     }
                     else{
+                        dataexist=1;
                         for(int i=jarray.length()-1; i>=0; i--){
                             JSONObject jobject = jarray.getJSONObject(i);
                             String Class_name = "";
@@ -662,23 +692,47 @@ public class HistoryActivity extends AppCompatActivity {
                     }
                     LinearLayout viewview=null;
                     RecyclerView viewviewview=null;
-                    if(weeklysearchon==0){
-                        viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
-                        viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
-                        viewview.setVisibility(viewview.GONE);
-                        viewviewview.setVisibility(viewviewview.VISIBLE);
-                        realadapter.notifyDataSetChanged();
-                        viewviewview.postInvalidate();
+                    if(dataexist==1){
+                        if(weeklysearchon==0){
+                            viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
+                            viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycle);
+                            viewview.setVisibility(viewview.GONE);
+                            viewviewview.setVisibility(viewviewview.VISIBLE);
+                            realadapter.notifyDataSetChanged();
+                            viewviewview.postInvalidate();
+                            one=(TextView)findViewById(R.id.dailypiegraphnotify);
+                            one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) +
+                                    " 아령 : " + count.get(3) + "\n" + mDate.getYear() + "년 " + (mDate.getMonth()+1) +"월 " + mDate.getDayOfMonth() + "일");
+                        }
+                        else
+                        {
+                            viewview = (LinearLayout)findViewById(R.id.progrssbarinweeklyHistoryActivity);
+                            viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycleinweekly);
+                            viewview.setVisibility(viewview.GONE);
+                            viewviewview.setVisibility(viewviewview.VISIBLE);
+                            realadapterweekly.notifyDataSetChanged();
+                            viewviewview.postInvalidate();
+                            one=(TextView)findViewById(R.id.weeklypiegraphnotify);
+                            one.setText("정지 : "+ count.get(0) + " 걷기 : " + count.get(1) + " 달리기 : " + count.get(2) + " 아령 : " + count.get(3) + "\n"
+                                    + mDateBefore.getYear() + (mDateBefore.getMonth()+1) + mDateBefore.getDayOfMonth()
+                                    + "~" +mDate.getYear()  + (mDate.getMonth()+1)  + mDate.getDayOfMonth());
+                        }
                     }
                     else
                     {
-                        viewview = (LinearLayout)findViewById(R.id.progrssbarinweeklyHistoryActivity);
-                        viewviewview = (RecyclerView)findViewById(R.id.HistoryActivityRecycleinweekly);
-                        viewview.setVisibility(viewview.GONE);
-                        viewviewview.setVisibility(viewviewview.VISIBLE);
-                        realadapterweekly.notifyDataSetChanged();
-                        viewviewview.postInvalidate();
+                        if(weeklysearchon==0)
+                        {
+                            viewview = (LinearLayout)findViewById(R.id.progrssbarinHistoryActivity);
+                            viewview.setVisibility(viewview.GONE);
+
+                        }
+                        else{
+                            viewview = (LinearLayout)findViewById(R.id.progrssbarinweeklyHistoryActivity);
+                            viewview.setVisibility(viewview.GONE);
+
+                        }
                     }
+
 
                 } catch (JSONException e){
                     e.printStackTrace();
