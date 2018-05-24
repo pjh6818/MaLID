@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(address == null)
         {
             Toast.makeText(getApplicationContext(), "페어링 상태를 확인해주세요.", Toast.LENGTH_LONG).show();
+            finish();
         }
         return null;
     }
